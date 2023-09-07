@@ -1,0 +1,20 @@
+
+  .nav-link {
+    font-size: 16px;
+    color: #ffffff;
+  }
+  .nav-style { 
+    margin-right: 20px; 
+  }
+
+  .icons-size {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .menu-icons-size {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 1rem;
+  }
+
