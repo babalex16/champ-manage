@@ -9,12 +9,21 @@ import youtube_icon from '../../assets/icons/icons8-youtube-50.svg'
 import settings_icon from '../../assets/icons/icons8-settings-50.svg'
 import log_out_icon from '../../assets/icons/icons8-greater-than-50.svg'
 import user_icon from '../../assets/icons/user-icon.svg'
+import mjjf_logo_short from '../../assets/icons/mjjf-logo-short.png'
 
 function CustomNavbar() {
   return (
-    <Navbar bg="dark" data-bs-theme="dark" expand="md" sticky="top" className="bg-body-tertiary">
+    <Navbar fixed="top" expand="md" className="bg-transparent">
       <Container>
-        <Navbar.Brand href="/">Logo</Navbar.Brand>
+        <Navbar.Brand href="/">
+            <img
+              src={mjjf_logo_short}
+              width="136"
+              height="50"
+              className="d-inline-block align-top"
+              alt="MJJF Logo"
+            />
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
@@ -37,9 +46,9 @@ function CustomNavbar() {
                 Log out
               </NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href="#"><img src={facebook_icon} alt="Facebook" className="icons-size"/></Nav.Link>
-            <Nav.Link href="#"><img src={whatsapp_icon} alt="Whatsapp" className="icons-size"/></Nav.Link>
-            <Nav.Link href="#"><img src={youtube_icon} alt="Youtube" className="icons-size"/></Nav.Link>
+            <Nav.Link href="https://www.facebook.com/JiuJitsuMoldova" target="_blank"><img src={facebook_icon} alt="Facebook" className="icons-size"/></Nav.Link>
+            <Nav.Link href="#" target="_blank"><img src={whatsapp_icon} alt="Whatsapp" className="icons-size"/></Nav.Link>
+            <Nav.Link href="https://www.youtube.com/@federatianationaladejiu-ji6267" target="_blank"><img src={youtube_icon} alt="Youtube" className="icons-size"/></Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
