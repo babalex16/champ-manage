@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import './CustomNavbar.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -12,8 +13,26 @@ import user_icon from '../../assets/icons/user-icon.svg'
 import mjjf_logo_short from '../../assets/icons/mjjf-logo-short.png'
 
 function CustomNavbar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY >= 500) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  
   return (
-    <Navbar fixed="top" expand="md" className="bg-transparent">
+    <Navbar fixed="top" expand="md" data-bs-theme="dark" className={scrolled ? 'navbar-scrolled' : ''}>
       <Container>
         <Navbar.Brand href="/">
             <img
