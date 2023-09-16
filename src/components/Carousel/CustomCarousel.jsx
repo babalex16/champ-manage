@@ -1,9 +1,9 @@
 import React from 'react'
-import "./Carousel.css"
 import Carousel from 'react-bootstrap/Carousel'
 import FirstCarouselImage from '../../assets/photos/banner.jpg'
 import SecondCarouselImage from '../../assets/photos/banner.jpg'
 import ThirdCarouselImage from '../../assets/photos/banner.jpg'
+import "./Carousel.css"
 
 function CustomCarousel() {
   return (
