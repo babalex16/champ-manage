@@ -31,7 +31,7 @@ const eventData = [
 
 function Events() {
   return (
-    <div className='events-background'>
+    <section id='events' className='events-background'>
       <div className='events-container'>
         <div>
           <h3 className='text-white text-uppercase text-center customFont my-5'>Upcoming events</h3>
@@ -58,7 +58,7 @@ function Events() {
           ALL CHAMPIONSHIPS
         </Button>
       </div>
-    </div>
+    </section>
   );
 }
 

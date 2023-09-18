@@ -10,7 +10,7 @@ import youtube_icon from '../../assets/icons/icons8-youtube-50.svg'
 import settings_icon from '../../assets/icons/icons8-settings-50.svg'
 import log_out_icon from '../../assets/icons/icons8-greater-than-50.svg'
 import user_icon from '../../assets/icons/user-icon.svg'
-import mjjf_logo_short from '../../assets/icons/mjjf-logo-short.png'
+import mjjf_logo_short from '../../assets/icons/mjjf-logo-long-white.png'
 
 function CustomNavbar() {
   const [scrolled, setScrolled] = useState(false);
