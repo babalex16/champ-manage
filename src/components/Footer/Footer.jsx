@@ -10,13 +10,13 @@ function Footer() {
     <div className="footer-container">
       <img src={logo} alt="Logo" className="logo" />
       <div className="icons-container">
-        <a href="https://www.facebook.com/JiuJitsuMoldova" target="_blank" >
+        <a href="https://www.facebook.com/JiuJitsuMoldova" target="_blank" rel="noreferrer noopener">
           <img src={facebook_icon} alt="Facebook" className="icon" />
         </a>
-        <a href="#" target="_blank">
+        <a href="#" target="_blank" rel="noreferrer noopener">
           <img src={whatsapp_icon} alt="Whatsapp" className="icon" />
         </a>
-        <a href="https://www.youtube.com/@federatianationaladejiu-ji6267" target="_blank">
+        <a href="https://www.youtube.com/@federatianationaladejiu-ji6267" target="_blank" rel="noreferrer noopener">
           <img src={youtube_icon} alt="Youtube" className="icon" />
         </a>
       </div>

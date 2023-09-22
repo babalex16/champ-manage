@@ -23,3 +23,12 @@
 .navbar-scrolled {
   background-color: #040D12;
 }
+
+.modal-content {
+  background-color: #040D12;
+}
+
+.form-entry {
+  border-radius: 15px;
+  width: 300px;
+}
