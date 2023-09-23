@@ -6,6 +6,7 @@ import NewsPage from './pages/NewsPage'
 import RulesPage from './pages/RulesPage'
 import ContactsPage from './pages/ContactsPage'
 import AccountPage from './pages/AccountPage';
+import RegistrationPage from './pages/RegistrationPage';
 import { Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path='/rules' element={<RulesPage/>} />
           <Route path='/contacts' element={<ContactsPage/>} />
           <Route path='/account' element={<AccountPage/>} />
+          <Route path='/register'element={<RegistrationPage/>} />
         </Routes>
     </>
   );

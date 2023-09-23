@@ -36,7 +36,7 @@ function News() {
     <section id='news' className='news-background'>
         <h3 className='news-title pt-5'>Recent News</h3>
         <div className='news-container'>
-            <Row xs={1} sm={1} md={2} xl={3} className="g-3 news-row">
+            <Row xs={1} sm={1} md={2} xl={3} className="g-3 news-row mb-3">
               {newsData.map((news, idx) => (
                 <Col key={idx}>
                   <Card className='news-card'>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import './CustomNavbar.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -6,16 +7,14 @@ import Navbar from 'react-bootstrap/Navbar';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import facebook_icon from '../../assets/icons/icons8-facebook-50.svg'
 import whatsapp_icon from '../../assets/icons/icons8-whatsapp-50.svg'
 import youtube_icon from '../../assets/icons/icons8-youtube-50.svg'
-import settings_icon from '../../assets/icons/icons8-settings-50.svg'
-import log_out_icon from '../../assets/icons/icons8-greater-than-50.svg'
-import user_icon from '../../assets/icons/user-icon.svg'
 import mjjf_logo_short from '../../assets/icons/mjjf-logo-long-white.png'
 
 function CustomNavbar() {
+  const location = useLocation();
+  const isFrontPage = location.pathname === '/';
   const [scrolled, setScrolled] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -44,7 +43,14 @@ function CustomNavbar() {
   }
   
   return (
-    <Navbar fixed="top" expand="md" data-bs-theme="dark" className={scrolled ? 'navbar-scrolled' : ''}>
+    <Navbar
+      fixed="top"
+      expand="md"
+      data-bs-theme="dark"
+      className={`${
+        isFrontPage ? 'navbar-transparent' : 'navbar-color'
+      } ${scrolled ? 'navbar-scrolled' : ''}`}
+    >
       <Container>
         <Navbar.Brand href="/">
             <img
@@ -73,7 +79,6 @@ function CustomNavbar() {
         centered 
         show={showModal} 
         onHide={handleCloseModal} 
-        className='modal-color'
       >
       <Modal.Header >
         <Modal.Title className="w-100 text-center text-white">Sign In</Modal.Title>
@@ -90,7 +95,7 @@ function CustomNavbar() {
         <a href="#" className="text-decoration-none text-underline">Forgot your password?</a>
         </div>
         <div className='text-center mt-3 mb-1'>
-          <a href="#" className="text-decoration-none text-underline">Create an account</a>
+          <a href="/register" className="text-decoration-none text-underline">Create an account</a>
         </div>
         </Modal.Body> 
       </Modal>

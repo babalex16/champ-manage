@@ -1,0 +1,32 @@
+.page-background {
+    height: 100vh;
+    overflow: hidden;
+    padding-top: 120px; /*indent for navbar */
+    background-color: #183D3D;
+}
+
+.form-background {
+    background-color: #93B1A6;
+    border-radius: 15px;
+    padding: 40px;
+    width: 80%; /* default width for extra small screens */
+  }
+  
+  @media (min-width: 576px) {
+    .form-background {
+      width: 60%; /* width for small screens */
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .form-background {
+      width: 40%; /* width for large screens */
+    }
+  }
+  
+  @media (min-width: 1400px) {
+    .form-background {
+      width: 30%; /* width for extra large screens */
+    }
+  }
+  
