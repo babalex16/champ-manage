@@ -2,7 +2,6 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
 import './News.css';
 import bannerImage from '../../assets/photos/banner.jpg';
 
@@ -53,11 +52,6 @@ function News() {
               ))}
             </Row>
           </div>
-      <div className='text-center py-5'>
-        <Button href="/news" variant="outline-light" size="md" className='customFont '>
-          ALL NEWS
-        </Button>
-      </div>
     </section>
   );
 }

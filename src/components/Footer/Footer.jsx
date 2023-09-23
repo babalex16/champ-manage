@@ -5,9 +5,9 @@ import youtube_icon from '../../assets/icons/icons8-youtube-50.svg'
 import logo from '../../assets/icons/mjjf-logo-long-white.png';
 import './Footer.css';
 
-function Footer() {
+function Footer({backgroundColor}) {
   return (
-    <div className="footer-container">
+    <div className="footer-container" style={{ backgroundColor }}>
       <img src={logo} alt="Logo" className="logo" />
       <div className="icons-container">
         <a href="https://www.facebook.com/JiuJitsuMoldova" target="_blank" rel="noreferrer noopener">
