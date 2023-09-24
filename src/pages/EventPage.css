@@ -1,0 +1,16 @@
+body {
+    color: white;
+}
+
+.event-banner {
+    width: 100%;
+    height: 75vh;
+}
+
+.event-data {
+    width: 75%;
+}
+
+.btn-style{
+    width: 100%;
+}

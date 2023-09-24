@@ -9,17 +9,17 @@ const eventData = [
   {
     imageSrc: bannerImage, 
     date: '20-09-2023',
-    link: '#',
+    link: '/event',
   },
   {
     imageSrc: bannerImage, 
     date: '05-10-2023',
-    link: '#',
+    link: '/event',
   },
   {
     imageSrc: bannerImage,
     date: '15-11-2023',
-    link: '#',
+    link: '/event',
   },
   {
     imageSrc: bannerImage,
