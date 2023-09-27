@@ -10,6 +10,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Table from 'react-bootstrap/Table';
 import coverImg from '../assets/photos/bg-mustard-color.jpg';
 import './EventPage.css';
+import { Button } from 'react-bootstrap';
 
 function EventPage() {
 
@@ -25,8 +26,9 @@ function EventPage() {
                 >
                     <Tab eventKey="information" title="Information">
                         {/* Content for INFORMATION tab */}
+                        
                         <Container className="mt-4">
-                            <Row>
+                            <Row className='mb-3'>
                                 <Col md={4}>
                                     <h3>RELEVANT DATES:</h3>
                                     <p>
@@ -40,6 +42,21 @@ function EventPage() {
                                     </p>
                                 </Col>
                                 <Col md={4}>
+                                    <h3>REGISTRATION FEE</h3>
+                                    <p className="text-dark">
+                                        Normal: <span>&euro;</span>30
+                                        <br />
+                                        Late: <span>&euro;</span>35
+                                    </p>
+                                </Col>
+                                <Col md={4} className="text-center">
+                                    <Button href="/" variant="light" size="lg" className='font'>
+                                        Register Now
+                                    </Button>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={4}>
                                     <h3>LOCATION</h3>
                                     <p className="text-dark">
                                         Sport Ireland National Indoor Arena
@@ -49,13 +66,8 @@ function EventPage() {
                                         Dublin 15
                                     </p>
                                 </Col>
-                                <Col md={4}>
-                                    <h3>REGISTRATION FEE</h3>
-                                    <p className="text-dark">
-                                        Normal: <span>&euro;</span>30
-                                        <br />
-                                        Late: <span>&euro;</span>35
-                                    </p>
+                                <Col md={8}>
+
                                 </Col>
                             </Row>
                         </Container>
@@ -150,7 +162,7 @@ function EventPage() {
                                     </Col>
                                     <Col className='text-end'>
                                         <Dropdown>
-                                            <Dropdown.Toggle variant="secondary" size='lg' id="belt-dropdown">
+                                            <Dropdown.Toggle variant="outline-light" size='lg' id="belt-dropdown">
                                                 Select the belt
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu>

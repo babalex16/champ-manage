@@ -14,3 +14,11 @@ body {
 .btn-style{
     width: 100%;
 }
+
+.nav-tabs {
+    background-color: #93b1a6;
+}
+
+.font {
+    font-family: Roboto, sans-serif;
+}
