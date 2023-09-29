@@ -4,13 +4,14 @@ import Container from 'react-bootstrap/Container';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Row from 'react-bootstrap/Row';
-import Footer from '../components/Footer/Footer';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Table from 'react-bootstrap/Table';
+import Button  from 'react-bootstrap/Button';
+import Footer from '../components/Footer/Footer';
+import Map from '../components/Map/Map';
 import coverImg from '../assets/photos/bg-mustard-color.jpg';
-import './EventPage.css';
-import { Button } from 'react-bootstrap';
+import '../utils/EventPage.css'
 
 function EventPage() {
 
@@ -29,7 +30,7 @@ function EventPage() {
                         
                         <Container className="mt-4">
                             <Row className='mb-3'>
-                                <Col md={4}>
+                                <Col lg={4} >
                                     <h3>RELEVANT DATES:</h3>
                                     <p>
                                         Date of the event: <br /> <span className="text-dark">December 2nd - 3rd, 2023</span>
@@ -41,7 +42,7 @@ function EventPage() {
                                         Brackets Release Date: <br /> <span className="text-dark">29 Nov, 2023</span>
                                     </p>
                                 </Col>
-                                <Col md={4}>
+                                <Col lg={4}>
                                     <h3>REGISTRATION FEE</h3>
                                     <p className="text-dark">
                                         Normal: <span>&euro;</span>30
@@ -49,32 +50,32 @@ function EventPage() {
                                         Late: <span>&euro;</span>35
                                     </p>
                                 </Col>
-                                <Col md={4} className="text-center">
+                                <Col lg={{ span: 4, order: 'last'}} xs={{ order: 'first' }} className="text-center mb-5">
                                     <Button href="/" variant="light" size="lg" className='font'>
                                         Register Now
                                     </Button>
                                 </Col>
                             </Row>
                             <Row>
-                                <Col md={4}>
-                                    <h3>LOCATION</h3>
+                                <Col md={4} >
+                                    <h3 className='mb-3'>LOCATION</h3>
                                     <p className="text-dark">
-                                        Sport Ireland National Indoor Arena
+                                        str. Decebal 2/1 Palatul Feroviarilor
                                         <br />
-                                        Snugborough Road, Blanchardstown
+                                        Chişinău 2000
                                         <br />
-                                        Dublin 15
+                                        Moldova
                                     </p>
                                 </Col>
-                                <Col md={8}>
-
+                                <Col md={8} className='map-height'>
+                                    <Map/>
                                 </Col>
                             </Row>
                         </Container>
                         <Container className="mt-4">
                             <Row>
                                 <Col>
-                                    <h2 className='mt-5'>BELT & AGE DIVISIONS</h2>
+                                    <h2 className='mt-5'> BELT & AGE DIVISIONS</h2>
                                     <p>BELT AND AGE DIVISIONS</p>
                                     {/* Table content  */}
                                     <table>

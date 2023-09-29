@@ -22,3 +22,7 @@ body {
 .font {
     font-family: Roboto, sans-serif;
 }
+
+.map-height {
+    height: 45vh;
+}
