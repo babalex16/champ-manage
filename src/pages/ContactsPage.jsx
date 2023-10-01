@@ -2,7 +2,8 @@ import React from 'react';
 import coverImg from '../assets/photos/mjjf-fb-cover.png';
 import Footer from '../components/Footer/Footer';
 import Image from 'react-bootstrap/Image';
-import { Container, Table } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import Table from 'react-bootstrap/Table';
 
 function ContactsPage() {
   return (

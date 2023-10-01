@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Table from 'react-bootstrap/Table';
-import Button  from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/Button';
 import Footer from '../components/Footer/Footer';
 import Map from '../components/Map/Map';
 import coverImg from '../assets/photos/bg-mustard-color.jpg';
@@ -27,7 +27,7 @@ function EventPage() {
                 >
                     <Tab eventKey="information" title="Information">
                         {/* Content for INFORMATION tab */}
-                        
+
                         <Container className="mt-4">
                             <Row className='mb-3'>
                                 <Col lg={4} >
@@ -50,7 +50,7 @@ function EventPage() {
                                         Late: <span>&euro;</span>35
                                     </p>
                                 </Col>
-                                <Col lg={{ span: 4, order: 'last'}} xs={{ order: 'first' }} className="text-center mb-5">
+                                <Col lg={{ span: 4, order: 'last' }} xs={{ order: 'first' }} className="text-center mb-5">
                                     <Button href="/" variant="light" size="lg" className='font'>
                                         Register Now
                                     </Button>
@@ -68,7 +68,7 @@ function EventPage() {
                                     </p>
                                 </Col>
                                 <Col md={8} className='map-height'>
-                                    <Map/>
+                                    <Map />
                                 </Col>
                             </Row>
                         </Container>
@@ -182,7 +182,12 @@ function EventPage() {
                             <Container>
                                 <Row>
                                     <Col>
-                                        <h5>Age/Gender/Weight Category (XXkg)</h5>
+                                        <div className="d-flex align-items-center mb-2 ">
+                                            <h5>Age/Gender/Weight Category (XXkg) &nbsp;</h5>
+                                            <Button href="/" variant="light" size="md" className="font">
+                                                Bracket
+                                            </Button>
+                                        </div>
                                     </Col>
                                     <Col >
                                         <p className='text-end'>TOTAL: 3</p>

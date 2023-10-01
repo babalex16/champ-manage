@@ -1,0 +1,31 @@
+body {
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.competitor-name {
+    font-size: 130px;
+}
+
+.team-name {
+    font-size: 50px;
+}
+
+.points-size {
+    font-size: 230px;
+}
+
+.category-size {
+    font-size: 80px;
+}
+
+.timer-size {
+    font-size: 250px;
+}
+
+.caption-size {
+    font-size: 25px;
+}
+
+.advantage-size {
+    font-size: 70px;
+}
