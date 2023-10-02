@@ -11,7 +11,7 @@ body {
 }
 
 .points-size {
-    font-size: 230px;
+    font-size: 190px;
 }
 
 .category-size {
@@ -29,3 +29,8 @@ body {
 .advantage-size {
     font-size: 70px;
 }
+
+.no-caret::after {
+    display: none;
+  }
+

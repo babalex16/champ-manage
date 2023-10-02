@@ -9,6 +9,7 @@ import AccountPage from './pages/AccountPage';
 import RegistrationPage from './pages/RegistrationPage';
 import EventPage from './pages/EventPage';
 import TimerPage from './pages/TimerPage';
+import TestPage from './pages/TestPage';
 import { Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -25,8 +26,9 @@ function App() {
           <Route path='/contacts' element={<ContactsPage/>} />
           <Route path='/account' element={<AccountPage/>} />
           <Route path='/register'element={<RegistrationPage/>} />
-          <Route path='/event'element={<EventPage/>} />
-          <Route path='/timer'element={<TimerPage/>} />
+          <Route path='/event' element={<EventPage/>} />
+          <Route path='/timer' element={<TimerPage/>} />
+          <Route path='/test' element={<TestPage/>} />
         </Routes>
     </>
   );
