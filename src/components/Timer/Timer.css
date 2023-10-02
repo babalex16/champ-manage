@@ -27,10 +27,25 @@ body {
 }
 
 .advantage-size {
-    font-size: 70px;
+    font-size: 75px;
 }
 
 .no-caret::after {
     display: none;
-  }
+}
 
+/* Timer hover effect */
+.timer-size:hover {
+    cursor: pointer;
+}
+
+.hover-animation:hover {
+    transform: translateY(-5px);
+    /* Adjust the value to control the lift effect */
+    transition: transform 0.2s ease-in-out;
+    /* Adjust the duration and easing as needed */
+}
+
+.pointer-cursor {
+    cursor: pointer;
+}

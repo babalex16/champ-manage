@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -6,6 +6,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import './Timer.css';
 
 function Timer() {
+    //Scoreboard Logic
     const [redScore, setRedScore] = useState(0);
     const [blueScore, setBlueScore] = useState(0);
     const [redAdvantage, setRedAdvantage] = useState(0);
@@ -17,12 +18,12 @@ function Timer() {
         const newScore = redScore + value;
         setRedScore(newScore >= 0 ? newScore : 0);
     };
-    
+
     const handleBlueButtonClick = (value) => {
         const newScore = blueScore + value;
         setBlueScore(newScore >= 0 ? newScore : 0);
     };
-    
+
     const handleAdvantageClick = (player) => {
         if (player === 'red') {
             setRedAdvantage((prevAdvantage) => Math.max(prevAdvantage + 1, 0));
@@ -30,7 +31,7 @@ function Timer() {
             setBlueAdvantage((prevAdvantage) => Math.max(prevAdvantage + 1, 0));
         }
     };
-    
+
     const handlePenaltyClick = (player) => {
         if (player === 'red') {
             if (redPenalty === 0) {
@@ -60,7 +61,7 @@ function Timer() {
             }
         }
     };
-    
+
     const handleRightClickScore = (e, player) => {
         e.preventDefault();
         if (player === 'red') {
@@ -69,7 +70,7 @@ function Timer() {
             setBlueScore((prevScore) => Math.max(prevScore - 1, 0));
         }
     };
-    
+
     const handleRightClickAdvantage = (e, player) => {
         e.preventDefault();
         if (player === 'red') {
@@ -78,7 +79,7 @@ function Timer() {
             setBlueAdvantage((prevAdvantage) => Math.max(prevAdvantage - 1, 0));
         }
     };
-    
+
     const handleRightClickPenalty = (e, player) => {
         e.preventDefault();
         if (player === 'red') {
@@ -86,6 +87,38 @@ function Timer() {
         } else if (player === 'blue') {
             setBluePenalty((prevPenalty) => Math.max(prevPenalty - 1, 0));
         }
+    };
+
+    //Timer Logic
+    const [time, setTime] = useState(300); // 5 minutes in seconds
+    const [timerOn, setTimerOn] = useState(false);
+
+    useEffect(() => {
+        let interval;
+        if (timerOn) {
+            interval = setInterval(() => {
+                setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+            }, 1000);
+        }
+        return () => clearInterval(interval);
+    }, [timerOn]);
+
+    const handleTimerLeftClick = () => {
+        setTimerOn(!timerOn);
+    };
+
+    const handleTimerRightClick = (e) => {
+        e.preventDefault();
+        const customTime = prompt('Enter custom time in seconds:');
+        if (customTime) {
+            setTime(parseInt(customTime));
+        }
+    };
+
+    const formatTime = (time) => {
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
     return (
@@ -97,7 +130,7 @@ function Timer() {
                 </Col>
                 <Col xs={1} className="d-flex flex-column text-center">
                     <p className="text-secondary caption-size m-0">Advantage</p>
-                    <p className="text-secondary advantage-size m-0"
+                    <p className={`m-0 ${redAdvantage >= 1 ? 'text-success' : 'text-secondary'} advantage-size pointer-cursor`}
                         onClick={() => handleAdvantageClick('red')}
                         onContextMenu={(e) => {
                             handleRightClickAdvantage(e, 'red');
@@ -105,8 +138,9 @@ function Timer() {
                     >
                         {redAdvantage}
                     </p>
+
                     <p className="text-secondary caption-size m-0">Penalty</p>
-                    <p className="text-secondary advantage-size m-0"
+                    <p className={`m-0 ${redPenalty >= 1 ? 'text-danger' : 'text-secondary'} advantage-size pointer-cursor`}
                         onClick={() => handlePenaltyClick('red')}
                         onContextMenu={(e) => {
                             handleRightClickPenalty(e, 'red');
@@ -138,7 +172,7 @@ function Timer() {
                 </Col>
                 <Col xs={1} className="d-flex flex-column text-center">
                     <p className="text-secondary caption-size m-0">Advantage</p>
-                    <p className="text-secondary advantage-size m-0"
+                    <p className={`m-0 ${blueAdvantage >= 1 ? 'text-success' : 'text-secondary'} advantage-size pointer-cursor`}
                         onClick={() => handleAdvantageClick('blue')}
                         onContextMenu={(e) => {
                             handleRightClickAdvantage(e, 'blue');
@@ -147,7 +181,7 @@ function Timer() {
                         {blueAdvantage}
                     </p>
                     <p className="text-secondary caption-size m-0">Penalty</p>
-                    <p className="text-secondary advantage-size m-0"
+                    <p className={`m-0 ${bluePenalty >= 1 ? 'text-danger' : 'text-secondary'} advantage-size pointer-cursor`}
                         onClick={() => handlePenaltyClick('blue')}
                         onContextMenu={(e) => {
                             handleRightClickPenalty(e, 'blue');
@@ -176,8 +210,15 @@ function Timer() {
                 <Col className="d-flex align-items-center">
                     <h2 className="category-size">Adults/ Male/ -85kg</h2>
                 </Col>
-                <Col className="text-end">
-                    <h1 className="timer-size">00:00</h1>
+                <Col >
+                    <h1
+                        className={`timer-size text-end ${!timerOn ? 'hover-animation' : ''}`}
+                        onClick={handleTimerLeftClick}
+                        onContextMenu={handleTimerRightClick}
+                    >
+                        {formatTime(time)}
+                    </h1>
+
                 </Col>
             </Row>
         </Container>

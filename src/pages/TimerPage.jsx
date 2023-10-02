@@ -10,7 +10,7 @@ function TimerPage() {
                 Enter fullscreen
             </button>
             <FullScreen handle={handle}>
-                <Timer/>
+                <Timer />
             </FullScreen>
         </div>
     )
