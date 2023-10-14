@@ -122,7 +122,7 @@ function Timer() {
     };
 
     return (
-        <Container fluid>
+        <Container fluid className='font'>
             <Row className="bg-dark text-white">
                 <Col xs={9}>
                     <h2 className="competitor-name">Guțu Șăineanu</h2>
