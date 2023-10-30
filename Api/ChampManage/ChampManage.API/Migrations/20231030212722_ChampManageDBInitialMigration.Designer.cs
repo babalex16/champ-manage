@@ -11,13 +11,28 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChampManage.API.Migrations
 {
     [DbContext(typeof(ChampManageContext))]
-    [Migration("20231030193616_ChampManageDBInitialMigration")]
+    [Migration("20231030212722_ChampManageDBInitialMigration")]
     partial class ChampManageDBInitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
+
+            modelBuilder.Entity("ChampionshipUser", b =>
+                {
+                    b.Property<int>("ParticipantsId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RegisteredChampionshipsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ParticipantsId", "RegisteredChampionshipsId");
+
+                    b.HasIndex("RegisteredChampionshipsId");
+
+                    b.ToTable("ChampionshipUser");
+                });
 
             modelBuilder.Entity("ChampManage.API.Entities.Championship", b =>
                 {
@@ -57,37 +72,6 @@ namespace ChampManage.API.Migrations
                     b.ToTable("Championships");
                 });
 
-            modelBuilder.Entity("ChampManage.API.Entities.Match", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ChampionshipId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Participant1Id")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Participant2Id")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("WinnerId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChampionshipId");
-
-                    b.HasIndex("Participant1Id");
-
-                    b.HasIndex("Participant2Id");
-
-                    b.HasIndex("WinnerId");
-
-                    b.ToTable("Match");
-                });
-
             modelBuilder.Entity("ChampManage.API.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -100,9 +84,6 @@ namespace ChampManage.API.Migrations
                     b.Property<DateTime>("Birthdate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ChampionshipId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -113,9 +94,6 @@ namespace ChampManage.API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Gender")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsOrganiser")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("LastName")
@@ -130,20 +108,36 @@ namespace ChampManage.API.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("UserType")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Weight")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChampionshipId");
-
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ChampionshipUser", b =>
+                {
+                    b.HasOne("ChampManage.API.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("ParticipantsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ChampManage.API.Entities.Championship", null)
+                        .WithMany()
+                        .HasForeignKey("RegisteredChampionshipsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ChampManage.API.Entities.Championship", b =>
                 {
                     b.HasOne("ChampManage.API.Entities.User", "Organizer")
-                        .WithMany()
+                        .WithMany("CreatedChampionships")
                         .HasForeignKey("OrganizerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -151,53 +145,9 @@ namespace ChampManage.API.Migrations
                     b.Navigation("Organizer");
                 });
 
-            modelBuilder.Entity("ChampManage.API.Entities.Match", b =>
-                {
-                    b.HasOne("ChampManage.API.Entities.Championship", "Championship")
-                        .WithMany("Matches")
-                        .HasForeignKey("ChampionshipId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ChampManage.API.Entities.User", "Participant1")
-                        .WithMany()
-                        .HasForeignKey("Participant1Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ChampManage.API.Entities.User", "Participant2")
-                        .WithMany()
-                        .HasForeignKey("Participant2Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ChampManage.API.Entities.User", "Winner")
-                        .WithMany()
-                        .HasForeignKey("WinnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Championship");
-
-                    b.Navigation("Participant1");
-
-                    b.Navigation("Participant2");
-
-                    b.Navigation("Winner");
-                });
-
             modelBuilder.Entity("ChampManage.API.Entities.User", b =>
                 {
-                    b.HasOne("ChampManage.API.Entities.Championship", null)
-                        .WithMany("Participants")
-                        .HasForeignKey("ChampionshipId");
-                });
-
-            modelBuilder.Entity("ChampManage.API.Entities.Championship", b =>
-                {
-                    b.Navigation("Matches");
-
-                    b.Navigation("Participants");
+                    b.Navigation("CreatedChampionships");
                 });
 #pragma warning restore 612, 618
         }

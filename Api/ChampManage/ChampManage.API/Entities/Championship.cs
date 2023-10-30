@@ -30,9 +30,9 @@ namespace ChampManage.API.Entities
         public string? Description { get; set; }
 
         [ForeignKey("OrganizerId")]
-        public User? Organizer { get; set; }
+        public User Organizer { get; set; }
         public int OrganizerId { get; set; }
-
+        
         public ICollection<User> Participants { get; set; }
             = new List<User>();
 

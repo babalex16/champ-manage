@@ -45,15 +45,25 @@ namespace ChampManage.API.Entities
         [Phone]
         public string? Phone { get; set; }
 
-        public bool IsOrganiser { get; set; } = false;
-    }
+        public UserType UserType { get; set; }
 
+        // For Organizers
+        public ICollection<Championship> CreatedChampionships { get; set; } 
+            = new List<Championship>();
+        
+        // For Participants
+        public ICollection<Championship> RegisteredChampionships { get; set; } 
+            = new List<Championship>();
+    }
+}
+
+namespace ChampManage.API
+{   
     public enum Gender
     {
         Male,
         Female,
     }
-
     public enum BeltNames
     {
         White,
@@ -61,5 +71,10 @@ namespace ChampManage.API.Entities
         Purple,
         Brown,
         Black
+    }
+    public enum UserType
+    {
+        Organizer,
+        Participant
     }
 }

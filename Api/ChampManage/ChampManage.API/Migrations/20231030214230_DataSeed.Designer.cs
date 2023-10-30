@@ -3,6 +3,7 @@ using System;
 using ChampManage.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChampManage.API.Migrations
 {
     [DbContext(typeof(ChampManageContext))]
-    partial class ChampManageContextModelSnapshot : ModelSnapshot
+    [Migration("20231030214230_DataSeed")]
+    partial class DataSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
@@ -29,7 +31,7 @@ namespace ChampManage.API.Migrations
 
                     b.HasIndex("RegisteredChampionshipsId");
 
-                    b.ToTable("ChampionshipUser", (string)null);
+                    b.ToTable("ChampionshipUser");
                 });
 
             modelBuilder.Entity("ChampManage.API.Entities.Championship", b =>
@@ -67,7 +69,7 @@ namespace ChampManage.API.Migrations
 
                     b.HasIndex("OrganizerId");
 
-                    b.ToTable("Championships", (string)null);
+                    b.ToTable("Championships");
 
                     b.HasData(
                         new
@@ -149,7 +151,7 @@ namespace ChampManage.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
 
                     b.HasData(
                         new
