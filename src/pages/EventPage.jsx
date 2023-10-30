@@ -51,7 +51,7 @@ function EventPage() {
                                     </p>
                                 </Col>
                                 <Col lg={{ span: 4, order: 'last' }} xs={{ order: 'first' }} className="text-center mb-5">
-                                    <Button href="/" variant="light" size="lg" className='font'>
+                                    <Button href="/" variant="light" size="lg">
                                         Register Now
                                     </Button>
                                 </Col>
