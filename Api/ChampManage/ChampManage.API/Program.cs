@@ -1,4 +1,5 @@
 using ChampManage.API.Data;
+using ChampManage.API.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +13,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ChampManageContext>(DbContextOptions =>
          DbContextOptions.UseSqlite(
-              builder.Configuration["ConnectionStrings:ChampManageDBConnectionString"]));   
+              builder.Configuration["ConnectionStrings:ChampManageDBConnectionString"]));
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
