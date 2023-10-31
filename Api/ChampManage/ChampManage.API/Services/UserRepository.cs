@@ -53,7 +53,7 @@ namespace ChampManage.API.Services
 
         public async Task<bool> IsEmailUniqueAsync(string email)
         {
-            return await _context.Users.AnyAsync(u => u.Email == email);
+            return !(await _context.Users.AnyAsync(u => u.Email == email));
         }
 
         public async Task<bool> SaveChangesAsync()
@@ -66,10 +66,6 @@ namespace ChampManage.API.Services
             if (await IsEmailUniqueAsync(user.Email))
             {
                 _context.Users.Add(user);
-            }
-            else
-            {
-                throw new DuplicateEmailException("Email is not unique.");  
             }
         }
     }
