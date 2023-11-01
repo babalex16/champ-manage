@@ -12,7 +12,9 @@ namespace ChampManage.API.Services
         Task<IEnumerable<User>> GetParticipantsAsync();
         Task<IEnumerable<Championship>> GetChampionshipsOfOrganizerAsync(int organizerId);
         Task<IEnumerable<Championship>> GetChampionshipsOfParticipantAsync(int participantId);
+        Task<bool> UserExistsAsync(int userId);
         Task<bool> IsEmailUniqueAsync(string email);
         Task<bool> SaveChangesAsync();
+        void DeleteUser(User user);
     }
 }

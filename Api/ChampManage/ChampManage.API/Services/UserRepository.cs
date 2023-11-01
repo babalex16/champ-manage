@@ -68,5 +68,15 @@ namespace ChampManage.API.Services
                 _context.Users.Add(user);
             }
         }
+
+        public async Task<bool> UserExistsAsync(int userId)
+        {
+            return await _context.Users.AnyAsync(u => u.Id == userId);
+        }
+
+        public void DeleteUser(User user)
+        {
+            _context.Users.Remove(user);
+        }
     }
 }

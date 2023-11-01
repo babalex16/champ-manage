@@ -37,13 +37,6 @@ namespace ChampManage.API.Services
             }
         }
 
-        public async Task<IEnumerable<User>> GetParticipantsForChampionshipAsync(int championshipId)
-        {
-            return await _context.Users
-                .Where(u => u.RegisteredChampionships.Any(c => c.Id == championshipId))
-                .ToListAsync();
-        }
-
         public async Task AddParticipantToChampionshipAsync(int championshipId, int userId)
         {
             var championship = await _context.Championships.FindAsync(championshipId);
@@ -66,6 +59,13 @@ namespace ChampManage.API.Services
                 championship.Participants.Remove(user);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<IEnumerable<User>> GetParticipantsForChampionshipAsync(int championshipId)
+        {
+            return await _context.Users
+                .Where(u => u.RegisteredChampionships.Any(c => c.Id == championshipId))
+                .ToListAsync();
         }
 
         public async Task<User?> GetCreatorForChampionshipAsync(int championshipId)

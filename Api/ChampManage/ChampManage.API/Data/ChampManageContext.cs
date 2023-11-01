@@ -16,10 +16,11 @@ namespace ChampManage.API.Data
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
             modelBuilder.Entity<Championship>()
                 .HasOne(c => c.Organizer)
                 .WithMany(u => u.CreatedChampionships)
-                .HasForeignKey(c => c.OrganizerId);
+                .HasForeignKey(c => c.OrganizerId); 
             
             // Defining a list of matches for each championship
             var championship1Matches = new List<Match>
@@ -57,28 +58,25 @@ namespace ChampManage.API.Data
 
             // Seeding Championships
             modelBuilder.Entity<Championship>().HasData(
-                new Championship("Championship 1", "Location 1", new DateTime(2023, 1, 15), 50.00m)
+                new Championship("Championship 1", "Location 1", new DateTime(2023, 1, 15), 50.00m, 1)
                 {
                     Id = 1,
                     RegistrationDeadline = new DateTime(2023, 1, 15),
                     Description = "Description of Championship 1",
-                    OrganizerId = 1,
                     Matches = championship1Matches,
                 },
-                new Championship("Championship 2", "Location 2", new DateTime(2023, 2, 20), 40.00m)
+                new Championship("Championship 2", "Location 2", new DateTime(2023, 2, 20), 40.00m, 2)
                 {
                     Id = 2,
                     RegistrationDeadline = new DateTime(2023, 2, 20),
                     Description = "Description of Championship 2",
-                    OrganizerId = 2,
                     Matches = championship2Matches,
                 },
-                new Championship("Championship 3", "Location 3", new DateTime(2023, 3, 25), 60.00m)
+                new Championship("Championship 3", "Location 3", new DateTime(2023, 3, 25), 60.00m, 3)
                 {
                     Id = 3,
                     RegistrationDeadline = new DateTime(2023, 3, 25),
                     Description = "Description of Championship 3",
-                    OrganizerId = 3,
                     Matches = championship3Matches,
                 }
             );

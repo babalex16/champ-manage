@@ -111,5 +111,23 @@ namespace ChampManage.API.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{userId}")]
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+
+            var userEntity = await _userRepository.GetUserByIdAsync(userId);
+
+            if (userEntity == null)
+            {
+                return NotFound();
+            }
+
+            _userRepository.DeleteUser(userEntity);
+            await _userRepository.SaveChangesAsync();
+
+            return NoContent();
+        }
+
     }
 }

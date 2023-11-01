@@ -39,12 +39,13 @@ namespace ChampManage.API.Entities
         public ICollection<Match> Matches { get; set; }
             = new List<Match>();
 
-        public Championship(string title, string location, DateTime dateTime, decimal registrationFee)
+        public Championship(string title, string location, DateTime dateTime, decimal registrationFee, int organizerId)
         {
             Title = title;
             Location = location;
             DateTime = dateTime;
             RegistrationFee = registrationFee;
+            OrganizerId = organizerId;
         }
     }
 }
