@@ -7,7 +7,9 @@ namespace ChampManage.API.Profiles
         public UserProfile()
         {
             CreateMap<Entities.User, Models.UserDto>();
-            CreateMap<Models.UserForCreationDto, Entities.User>(); 
+            CreateMap<Models.UserForCreationDto, Entities.User>();
+            CreateMap<Models.UserProfileCreationDto, Entities.User>();
+            CreateMap<Entities.User, Models.UserProfileCreationDto>();
         }
     }
 }

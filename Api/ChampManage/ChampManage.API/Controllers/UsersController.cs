@@ -2,6 +2,7 @@
 using ChampManage.API.Entities;
 using ChampManage.API.Models;
 using ChampManage.API.Services;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChampManage.API.Controllers
@@ -72,6 +73,43 @@ namespace ChampManage.API.Controllers
                     userId = createdUserDtoToReturn.Id
                 },
                 createdUserDtoToReturn);
+        }
+
+        [HttpPatch("{userId}")]
+        public async Task<ActionResult<UserDto>> CreateUserProfile (
+                int userId, 
+                JsonPatchDocument<UserProfileCreationDto> patchDoc)
+        {
+            if (patchDoc == null)
+            {
+                return BadRequest();
+            }
+
+            var existingUserEntity = await _userRepository.GetUserByIdAsync(userId);
+
+            if (existingUserEntity == null)
+            {
+                return NotFound();
+            }
+            
+            var userProfileDto = _mapper.Map<UserProfileCreationDto>(existingUserEntity);
+
+            patchDoc.ApplyTo(userProfileDto, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!TryValidateModel(userProfileDto))
+            {
+                return BadRequest(ModelState);
+            }
+
+            _mapper.Map(userProfileDto, existingUserEntity);
+            await _userRepository.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }
