@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using ChampManage.API.Entities;
+using ChampManage.API.Models;
 
 namespace ChampManage.API.Profiles
 {
@@ -6,7 +8,10 @@ namespace ChampManage.API.Profiles
     {
         public ChampionshipProfile()
         {
-            CreateMap<Entities.Championship, Models.ChampionshipDto>();
+            CreateMap<Championship, ChampionshipDto>();
+            CreateMap<ChampionshipForCreationDto, Championship>();
+            CreateMap<ChampionshipForUpdateDto, Championship>();
+            CreateMap<Championship, ChampionshipForUpdateDto>();
         }
     }
 }

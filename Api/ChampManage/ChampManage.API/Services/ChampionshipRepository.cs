@@ -21,20 +21,14 @@ namespace ChampManage.API.Services
             return await _context.Championships.FindAsync(championshipId);
         }
 
-        public async Task CreateChampionshipAsync(Championship championship)
+        public void CreateChampionship(Championship championship)
         {
             _context.Championships.Add(championship);
-            await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteChampionshipAsync(int championshipId)
+        public void DeleteChampionship(Championship championship )
         {
-            var championship = await _context.Championships.FindAsync(championshipId);
-            if (championship != null)
-            {
-                _context.Championships.Remove(championship);
-                await _context.SaveChangesAsync();
-            }
+            _context.Championships.Remove(championship);
         }
 
         public async Task AddParticipantToChampionshipAsync(int championshipId, int userId)
@@ -45,7 +39,6 @@ namespace ChampManage.API.Services
             if (championship != null && user != null)
             {
                 championship.Participants.Add(user);
-                await _context.SaveChangesAsync();
             }
         }
 
@@ -57,7 +50,6 @@ namespace ChampManage.API.Services
             if (championship != null && user != null)
             {
                 championship.Participants.Remove(user);
-                await _context.SaveChangesAsync();
             }
         }
 
@@ -80,6 +72,11 @@ namespace ChampManage.API.Services
             return await _context.Championships
                 .Where(c => c.OrganizerId == userId)
                 .ToListAsync();
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync() >= 0;
         }
     }
 }

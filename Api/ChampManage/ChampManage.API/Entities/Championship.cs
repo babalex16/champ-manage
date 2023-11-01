@@ -5,7 +5,6 @@ namespace ChampManage.API.Entities
 {
     public class Championship
     {
-
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

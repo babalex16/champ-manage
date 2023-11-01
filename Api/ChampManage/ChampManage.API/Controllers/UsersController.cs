@@ -96,11 +96,6 @@ namespace ChampManage.API.Controllers
 
             patchDoc.ApplyTo(userProfileDto, ModelState);
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             if (!TryValidateModel(userProfileDto))
             {
                 return BadRequest(ModelState);
