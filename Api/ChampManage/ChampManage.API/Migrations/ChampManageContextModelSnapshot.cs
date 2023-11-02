@@ -29,7 +29,7 @@ namespace ChampManage.API.Migrations
 
                     b.HasIndex("RegisteredChampionshipsId");
 
-                    b.ToTable("ChampionshipUser");
+                    b.ToTable("ChampionshipUser", (string)null);
                 });
 
             modelBuilder.Entity("ChampManage.API.Entities.Category", b =>
@@ -65,7 +65,7 @@ namespace ChampManage.API.Migrations
 
                     b.HasIndex("ChampionshipId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -245,7 +245,7 @@ namespace ChampManage.API.Migrations
 
                     b.HasIndex("OrganizerId");
 
-                    b.ToTable("Championships");
+                    b.ToTable("Championships", (string)null);
 
                     b.HasData(
                         new
@@ -335,7 +335,7 @@ namespace ChampManage.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("ChampionshipUser", b =>
