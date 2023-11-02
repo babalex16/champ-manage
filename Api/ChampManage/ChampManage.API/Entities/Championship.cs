@@ -35,6 +35,9 @@ namespace ChampManage.API.Entities
         public ICollection<User> Participants { get; set; }
             = new List<User>();
 
+        public ICollection<Category> Categories { get; set; }
+            = new List<Category>();
+
         public ICollection<Match> Matches { get; set; }
             = new List<Match>();
 
