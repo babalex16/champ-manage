@@ -3,6 +3,7 @@ using System;
 using ChampManage.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChampManage.API.Migrations
 {
     [DbContext(typeof(ChampManageContext))]
-    partial class ChampManageContextModelSnapshot : ModelSnapshot
+    [Migration("20231101234404_ModifyingCategories")]
+    partial class ModifyingCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
@@ -61,148 +63,6 @@ namespace ChampManage.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Belt = 0,
-                            FightTimeMinutes = 2,
-                            MaxAge = 5,
-                            MaxWeight = 21,
-                            MinAge = 4,
-                            Name = "Pee Wee 1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Belt = 0,
-                            FightTimeMinutes = 2,
-                            MaxAge = 5,
-                            MaxWeight = 200,
-                            MinAge = 4,
-                            Name = "Pee Wee 1"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Belt = 0,
-                            FightTimeMinutes = 3,
-                            MaxAge = 7,
-                            MaxWeight = 21,
-                            MinAge = 6,
-                            Name = "Pee Wee 2"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Belt = 0,
-                            FightTimeMinutes = 3,
-                            MaxAge = 7,
-                            MaxWeight = 24,
-                            MinAge = 6,
-                            Name = "Pee Wee 2"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Belt = 0,
-                            FightTimeMinutes = 3,
-                            MaxAge = 7,
-                            MaxWeight = 27,
-                            MinAge = 6,
-                            Name = "Pee Wee 2"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Belt = 0,
-                            FightTimeMinutes = 3,
-                            MaxAge = 7,
-                            MaxWeight = 30,
-                            MinAge = 6,
-                            Name = "Pee Wee 2"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Belt = 0,
-                            FightTimeMinutes = 3,
-                            MaxAge = 7,
-                            MaxWeight = 200,
-                            MinAge = 6,
-                            Name = "Pee Wee 2"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Belt = 0,
-                            FightTimeMinutes = 3,
-                            MaxAge = 9,
-                            MaxWeight = 24,
-                            MinAge = 8,
-                            Name = "Junior 1"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Belt = 0,
-                            FightTimeMinutes = 3,
-                            MaxAge = 9,
-                            MaxWeight = 27,
-                            MinAge = 8,
-                            Name = "Junior 1"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Belt = 0,
-                            FightTimeMinutes = 3,
-                            MaxAge = 9,
-                            MaxWeight = 30,
-                            MinAge = 8,
-                            Name = "Junior 1"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Belt = 0,
-                            FightTimeMinutes = 3,
-                            MaxAge = 9,
-                            MaxWeight = 34,
-                            MinAge = 8,
-                            Name = "Junior 1"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Belt = 0,
-                            FightTimeMinutes = 3,
-                            MaxAge = 9,
-                            MaxWeight = 38,
-                            MinAge = 8,
-                            Name = "Junior 1"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Belt = 0,
-                            FightTimeMinutes = 3,
-                            MaxAge = 9,
-                            MaxWeight = 42,
-                            MinAge = 8,
-                            Name = "Junior 1"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Belt = 0,
-                            FightTimeMinutes = 3,
-                            MaxAge = 9,
-                            MaxWeight = 200,
-                            MinAge = 8,
-                            Name = "Junior 1"
-                        });
                 });
 
             modelBuilder.Entity("ChampManage.API.Entities.Championship", b =>

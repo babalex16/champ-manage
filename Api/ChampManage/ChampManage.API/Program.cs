@@ -21,6 +21,7 @@ builder.Services.AddDbContext<ChampManageContext>(DbContextOptions =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IChampionshipRepository, ChampionshipRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
