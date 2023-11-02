@@ -7,6 +7,7 @@ namespace ChampManage.API.Services
     {
         Task CreateUserAsync(User user);
         Task<User?> GetUserByIdAsync(int userId);
+        Task<User?> GetUserByEmailAsync(string email);
         Task<IEnumerable<User>> GetUsersAsync();
         Task<IEnumerable<User>> GetOrganizersAsync();
         Task<IEnumerable<User>> GetParticipantsAsync();

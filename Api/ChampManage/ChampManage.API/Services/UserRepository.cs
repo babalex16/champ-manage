@@ -19,7 +19,12 @@ namespace ChampManage.API.Services
 
         public async Task<User?> GetUserByIdAsync(int userId)
         {
-            return await _context.Users.FindAsync(userId);
+            return await _context.Users.Where(u => u.Id == userId).SingleOrDefaultAsync();
+        }
+
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users.Where(u => u.Email == email).SingleOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Championship>> GetChampionshipsOfOrganizerAsync(int organizerId)
