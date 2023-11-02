@@ -2,6 +2,7 @@
 using ChampManage.API.Entities;
 using ChampManage.API.Models;
 using ChampManage.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,6 +47,7 @@ namespace ChampManage.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "OrganizerOnly")]
         public async Task<ActionResult<ChampionshipDto>> CreateChampionship(
                 ChampionshipForCreationDto championshipForCreationDto)
         {

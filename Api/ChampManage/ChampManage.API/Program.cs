@@ -1,3 +1,4 @@
+using ChampManage.API;
 using ChampManage.API.Data;
 using ChampManage.API.Services;
 using Microsoft.EntityFrameworkCore;
@@ -40,7 +41,17 @@ builder.Services.AddAuthentication("Bearer")
                 Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"]))
         };
     }
-    );
+);
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("OrganizerOnly", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("user_type", UserType.Organizer.ToString());
+    });
+});
+
 
 var app = builder.Build();
 
