@@ -28,6 +28,12 @@ namespace ChampManage.API.Entities
         [EmailAddress]
         public string Email { get; set; }
 
+        [Required]
+        public byte[] PasswordHash { get; set; }
+
+        [Required]
+        public byte[] PasswordSalt { get; set; }
+ 
         public Gender Gender { get; set; }
 
         [DataType(DataType.Date)]

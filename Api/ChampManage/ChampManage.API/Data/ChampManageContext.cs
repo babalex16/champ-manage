@@ -80,7 +80,7 @@ namespace ChampManage.API.Data
                     Matches = championship3Matches,
                 }
             );
-
+            /*
             // Seeding Users
             modelBuilder.Entity<User>().HasData(
                new User("John", "Doe", "john@example.com")
@@ -147,7 +147,7 @@ namespace ChampManage.API.Data
                     Belt = BeltNames.White,
                     UserType = UserType.Participant,
                 }
-            );
+            ); */
 
             //seeding categories
             modelBuilder.Entity<Category>().HasData(

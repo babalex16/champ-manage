@@ -27,5 +27,4 @@ namespace ChampManage.API.Controllers
             return Ok(_mapper.Map<IEnumerable<CategoryDto>>(categories));
         }
     }
-
 }

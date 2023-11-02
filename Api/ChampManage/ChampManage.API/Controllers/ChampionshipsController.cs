@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChampManage.API.Controllers
 {
-    [ApiController]
     [Route("api/events")]
+    [ApiController]
     public class ChampionshipsController : ControllerBase
     {
         private readonly IChampionshipRepository _championshipRepository;
@@ -65,7 +65,7 @@ namespace ChampManage.API.Controllers
                 new { championshipId = createdChampionshipDtoToReturn.Id },
                 createdChampionshipDtoToReturn);
         }
-        
+
         [HttpDelete("{championshipId}")]
         public async Task<IActionResult> DeleteChampionship(int championshipId)
         {

@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChampManage.API.Controllers
 {
-    [ApiController]
     [Route("api/users")]
+    [ApiController]
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -24,8 +24,8 @@ namespace ChampManage.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers() 
-        {   
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
+        {
             var userEntities = await _userRepository.GetUsersAsync();
 
             return Ok(_mapper.Map<IEnumerable<UserDto>>(userEntities));
@@ -35,15 +35,15 @@ namespace ChampManage.API.Controllers
         public async Task<ActionResult<UserDto>> GetUser(int userId)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
-            if ( user == null)
+            if (user == null)
             {
                 return NotFound();
             }
             return Ok(_mapper.Map<UserDto>(user));
         }
-        
+
         [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateUser (
+        public async Task<ActionResult<UserDto>> CreateUser(
                     UserForCreationDto userForCreationDto)
         {
             if (userForCreationDto == null)
@@ -67,17 +67,17 @@ namespace ChampManage.API.Controllers
 
             var createdUserDtoToReturn = _mapper.Map<UserDto>(userToCreate);
 
-            return CreatedAtRoute("GetUser", 
-                new 
-                { 
+            return CreatedAtRoute("GetUser",
+                new
+                {
                     userId = createdUserDtoToReturn.Id
                 },
                 createdUserDtoToReturn);
         }
 
         [HttpPatch("{userId}")]
-        public async Task<ActionResult<UserDto>> CreateUserProfile (
-                int userId, 
+        public async Task<ActionResult<UserDto>> CreateUserProfile(
+                int userId,
                 JsonPatchDocument<UserProfileCreationDto> patchDoc)
         {
             if (patchDoc == null)
@@ -91,7 +91,7 @@ namespace ChampManage.API.Controllers
             {
                 return NotFound();
             }
-            
+
             var userProfileDto = _mapper.Map<UserProfileCreationDto>(existingUserEntity);
 
             patchDoc.ApplyTo(userProfileDto, ModelState);
@@ -123,6 +123,5 @@ namespace ChampManage.API.Controllers
 
             return NoContent();
         }
-
     }
 }
