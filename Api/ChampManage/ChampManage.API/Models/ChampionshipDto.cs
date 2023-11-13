@@ -15,6 +15,9 @@
                = new List<UserDto>();
         public ICollection<MatchDto> Matches { get; set; }
                = new List<MatchDto>();
+
+        public ICollection<CategoryDto> Categories { get; set; }
+               = new List<CategoryDto>();
     }
 
 }

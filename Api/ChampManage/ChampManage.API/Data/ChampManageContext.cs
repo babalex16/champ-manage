@@ -14,14 +14,16 @@ namespace ChampManage.API.Data
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Match> Matches { get; set; } = null!;
         public DbSet<Category> Categories { get; set; } = null!;
-        
+        public DbSet<ChampionshipCategory> ChampionshipCategories { get; set; } = null!;
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Championship>()
                 .HasOne(c => c.Organizer)
                 .WithMany(u => u.CreatedChampionships)
-                .HasForeignKey(c => c.OrganizerId); 
-            
+                .HasForeignKey(c => c.OrganizerId);
+
             // Defining a list of matches for each championship
             var championship1Matches = new List<Match>
 {

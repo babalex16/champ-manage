@@ -1,6 +1,7 @@
 ﻿using ChampManage.API.Data;
 using ChampManage.API.Entities;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ChampManage.API.Services
 {
@@ -71,7 +72,48 @@ namespace ChampManage.API.Services
         {
             return await _context.Championships
                 .Where(c => c.OrganizerId == userId)
-                .ToListAsync();
+            .ToListAsync();
+        }
+        public void AddCategoryToChampionship(int championshipId, int categoryId)
+        {
+            var championshipCategory = new ChampionshipCategory
+            {
+                ChampionshipId = championshipId,
+                CategoryId = categoryId
+            };
+
+            _context.ChampionshipCategories.Add(championshipCategory);
+        }
+
+        public async Task<IEnumerable<Category>> GetCategoriesForChampionshipAsync(int championshipId)
+        {
+            var championshipWithCategories = await _context.Championships
+                 .Include(c => c.ChampionshipCategories)
+                 .ThenInclude(cc => cc.Category)
+                 .FirstOrDefaultAsync(c => c.Id == championshipId);
+
+            if (championshipWithCategories == null)
+            {
+                return null;
+            }
+
+            return championshipWithCategories.ChampionshipCategories
+                .Select(cc => cc.Category)
+                .ToList();
+        }
+
+        public bool CategoryExistsInChampionship(int championshipId, int categoryId)
+        {
+            // Check if the category with the specified ID is already associated with the championship
+            return _context.ChampionshipCategories
+                .Any(cc => cc.ChampionshipId == championshipId && cc.CategoryId == categoryId);
+        }
+
+        //Marks the championship entity as modified, which signals to Entity
+        //Framework that it should update the entity in the database the next time SaveChanges is called.
+        public void UpdateChampionship(Championship championship)
+        {
+            _context.Entry(championship).State = EntityState.Modified;
         }
 
         public async Task<bool> SaveChangesAsync()

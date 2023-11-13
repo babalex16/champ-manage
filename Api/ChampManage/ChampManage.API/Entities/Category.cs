@@ -31,6 +31,9 @@ namespace ChampManage.API.Entities
         [Range(0, 15)]
         public int FightTimeMinutes { get; set; }
 
+        public ICollection<ChampionshipCategory> ChampionshipCategories { get; set; }
+            = new List<ChampionshipCategory>();
+
         public Category(string name, int minAge, int maxAge, int maxWeight, int fightTimeMinutes, BeltNames belt = BeltNames.White)
         {
             Name = name;

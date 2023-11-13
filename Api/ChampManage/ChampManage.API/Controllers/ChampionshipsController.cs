@@ -8,18 +8,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChampManage.API.Controllers
 {
-    [Route("api/events")]
+    [Route("api/championships")]
     [ApiController]
     public class ChampionshipsController : ControllerBase
     {
         private readonly IChampionshipRepository _championshipRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
 
-        public ChampionshipsController(IChampionshipRepository championshipRepository,
+        public ChampionshipsController( IChampionshipRepository championshipRepository,
+                                        ICategoryRepository categoryRepository, 
                                         IMapper mapper)
         {
             _championshipRepository = championshipRepository ??
                 throw new ArgumentNullException(nameof(championshipRepository));
+            _categoryRepository = categoryRepository ?? 
+                throw new ArgumentNullException(nameof(categoryRepository));
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
         }
@@ -116,5 +120,49 @@ namespace ChampManage.API.Controllers
 
             return NoContent();
         }
+
+        [HttpPost("{championshipId}/addCategory/{categoryId}")]
+        public IActionResult AddCategoryToChampionship(int championshipId, int categoryId)
+        {
+            if (!_categoryRepository.CategoryExists(categoryId))
+            {
+                return NotFound("Category not found.");
+            }
+
+            var championship = _championshipRepository.GetChampionshipByIdAsync(championshipId);
+
+            if (championship == null )
+            {
+                return NotFound("Championship or Category not found.");
+            }
+
+            if (_championshipRepository.CategoryExistsInChampionship(championshipId, categoryId))
+            {
+                return Conflict("Category already exists for the specified Championship.");
+            }
+
+            _championshipRepository.AddCategoryToChampionship(championshipId, categoryId);
+
+            return CreatedAtAction(nameof(AddCategoryToChampionship), 
+                new { championshipId, categoryId }, 
+                "Category added to championship successfully.");
+        }
+
+
+        [HttpGet("{championshipId}/getCategories")]
+        public async Task<IActionResult> GetCategoriesForChampionship(int championshipId)
+        {
+            var categories = await _championshipRepository.GetCategoriesForChampionshipAsync(championshipId);
+
+            if (categories == null || !categories.Any())
+            {
+                return NotFound("No categories found for the specified Championship.");
+            }
+
+            var categoryDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories);
+
+            return Ok(categoryDtos);
+        }
+
     }
 }
