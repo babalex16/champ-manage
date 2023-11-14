@@ -9,7 +9,6 @@ namespace ChampManage.API.Services
         //Task<IEnumerable<Category>> GetCategoriesByIdsAsync(IEnumerable<int> categoryIds);
         void AddCategory(Category category);
         void DeleteCategory(Category category);
-        bool CategoryExists(int categoryId);
         Task<bool> SaveChangesAsync();
     }
 }

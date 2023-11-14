@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ChampManage.API.Entities
 {
-    [NotMapped]
     public class Match
     {
         [Key]

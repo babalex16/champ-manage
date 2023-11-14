@@ -14,6 +14,7 @@ namespace ChampManage.API.Services
         Task<User> GetCreatorForChampionshipAsync(int championshipId);
         Task<IEnumerable<Championship>> GetChampionshipsCreatedByUserAsync(int userId);
         void AddCategoryToChampionship(int championshipId, int categoryId);
+        void RemoveCategoryFromChampionship(int championshipId, int categoryId);
         Task<IEnumerable<Category>> GetCategoriesForChampionshipAsync(int championshipId);
         bool CategoryExistsInChampionship(int championshipId, int categoryId);
         void UpdateChampionship(Championship championship);

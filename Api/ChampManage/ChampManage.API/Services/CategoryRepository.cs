@@ -49,12 +49,6 @@ namespace ChampManage.API.Services
             _context.Categories.Remove(category);
         }
 
-
-        public bool CategoryExists(int categoryId)
-        {
-            return _context.Categories.Any(c => c.Id == categoryId);
-        }
-
         public async Task<bool> SaveChangesAsync()
         {
             return (await _context.SaveChangesAsync()) > 0;

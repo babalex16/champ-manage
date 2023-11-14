@@ -85,6 +85,17 @@ namespace ChampManage.API.Services
             _context.ChampionshipCategories.Add(championshipCategory);
         }
 
+        public void RemoveCategoryFromChampionship(int championshipId, int categoryId)
+        {
+            var championshipCategory = _context.ChampionshipCategories
+                .FirstOrDefault(cc => cc.ChampionshipId == championshipId && cc.CategoryId == categoryId);
+
+            if (championshipCategory != null)
+            {
+                _context.ChampionshipCategories.Remove(championshipCategory);
+            }
+        }
+
         public async Task<IEnumerable<Category>> GetCategoriesForChampionshipAsync(int championshipId)
         {
             var championshipWithCategories = await _context.Championships

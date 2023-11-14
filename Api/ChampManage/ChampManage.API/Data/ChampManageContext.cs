@@ -15,7 +15,7 @@ namespace ChampManage.API.Data
         public DbSet<Match> Matches { get; set; } = null!;
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<ChampionshipCategory> ChampionshipCategories { get; set; } = null!;
-
+        public DbSet<UserCategoryRegistration> UserCategoryRegistrations { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,38 +25,38 @@ namespace ChampManage.API.Data
                 .HasForeignKey(c => c.OrganizerId);
 
             // Defining a list of matches for each championship
-            var championship1Matches = new List<Match>
-{
-                new Match
-                {
-                    Id = 1,
-                    Participant1Id = 1,
-                    Participant2Id = 2,
-                    WinnerId = 1,
-                },
-            };
+//            var championship1Matches = new List<Match>
+//{
+//                new Match
+//                {
+//                    Id = 1,
+//                    Participant1Id = 1,
+//                    Participant2Id = 2,
+//                    WinnerId = 1,
+//                },
+//            };
 
-            var championship2Matches = new List<Match>
-            {
-                new Match
-                {
-                    Id = 2,
-                    Participant1Id = 3,
-                    Participant2Id = 4,
-                    WinnerId = 3,
-                },
-            };
+//            var championship2Matches = new List<Match>
+//            {
+//                new Match
+//                {
+//                    Id = 2,
+//                    Participant1Id = 3,
+//                    Participant2Id = 4,
+//                    WinnerId = 3,
+//                },
+//            };
 
-            var championship3Matches = new List<Match>
-            {
-                new Match
-                {
-                    Id = 3,
-                    Participant1Id = 5,
-                    Participant2Id = 6,
-                    WinnerId = 5,
-                },
-            };
+//            var championship3Matches = new List<Match>
+//            {
+//                new Match
+//                {
+//                    Id = 3,
+//                    Participant1Id = 5,
+//                    Participant2Id = 6,
+//                    WinnerId = 5,
+//                },
+//            };
 
             // Seeding Championships
             modelBuilder.Entity<Championship>().HasData(
@@ -65,21 +65,18 @@ namespace ChampManage.API.Data
                     Id = 1,
                     RegistrationDeadline = new DateTime(2023, 1, 15),
                     Description = "Description of Championship 1",
-                    Matches = championship1Matches,
                 },
                 new Championship("Championship 2", "Location 2", new DateTime(2023, 2, 20), 40.00m, 2)
                 {
                     Id = 2,
                     RegistrationDeadline = new DateTime(2023, 2, 20),
                     Description = "Description of Championship 2",
-                    Matches = championship2Matches,
                 },
                 new Championship("Championship 3", "Location 3", new DateTime(2023, 3, 25), 60.00m, 3)
                 {
                     Id = 3,
                     RegistrationDeadline = new DateTime(2023, 3, 25),
                     Description = "Description of Championship 3",
-                    Matches = championship3Matches,
                 }
             );
             /*

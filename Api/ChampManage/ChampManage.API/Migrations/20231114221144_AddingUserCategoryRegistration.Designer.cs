@@ -3,6 +3,7 @@ using System;
 using ChampManage.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChampManage.API.Migrations
 {
     [DbContext(typeof(ChampManageContext))]
-    partial class ChampManageContextModelSnapshot : ModelSnapshot
+    [Migration("20231114221144_AddingUserCategoryRegistration")]
+    partial class AddingUserCategoryRegistration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
@@ -41,6 +43,9 @@ namespace ChampManage.API.Migrations
                     b.Property<int>("Belt")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("ChampionshipId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("FightTimeMinutes")
                         .HasColumnType("INTEGER");
 
@@ -59,6 +64,8 @@ namespace ChampManage.API.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ChampionshipId");
 
                     b.ToTable("Categories");
 
@@ -431,6 +438,13 @@ namespace ChampManage.API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ChampManage.API.Entities.Category", b =>
+                {
+                    b.HasOne("ChampManage.API.Entities.Championship", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("ChampionshipId");
+                });
+
             modelBuilder.Entity("ChampManage.API.Entities.Championship", b =>
                 {
                     b.HasOne("ChampManage.API.Entities.User", "Organizer")
@@ -539,6 +553,8 @@ namespace ChampManage.API.Migrations
 
             modelBuilder.Entity("ChampManage.API.Entities.Championship", b =>
                 {
+                    b.Navigation("Categories");
+
                     b.Navigation("ChampionshipCategories");
                 });
 

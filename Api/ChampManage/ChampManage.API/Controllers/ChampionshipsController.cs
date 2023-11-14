@@ -122,18 +122,18 @@ namespace ChampManage.API.Controllers
         }
 
         [HttpPost("{championshipId}/addCategory/{categoryId}")]
-        public IActionResult AddCategoryToChampionship(int championshipId, int categoryId)
+        public async Task<IActionResult> AddCategoryToChampionship(int championshipId, int categoryId)
         {
-            if (!_categoryRepository.CategoryExists(categoryId))
+            var category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
+            if (category == null )
             {
                 return NotFound("Category not found.");
             }
 
-            var championship = _championshipRepository.GetChampionshipByIdAsync(championshipId);
-
+            var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
             if (championship == null )
             {
-                return NotFound("Championship or Category not found.");
+                return NotFound("Championship not found.");
             }
 
             if (_championshipRepository.CategoryExistsInChampionship(championshipId, categoryId))
@@ -142,27 +142,59 @@ namespace ChampManage.API.Controllers
             }
 
             _championshipRepository.AddCategoryToChampionship(championshipId, categoryId);
+            await _championshipRepository.SaveChangesAsync();
 
             return CreatedAtAction(nameof(AddCategoryToChampionship), 
                 new { championshipId, categoryId }, 
                 "Category added to championship successfully.");
         }
 
+        [HttpDelete("{championshipId}/removeCategory/{categoryId}")]
+        public async Task<IActionResult> RemoveCategoryFromChampionship(int championshipId, int categoryId)
+        {
+            var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
+            if (championship == null)
+            {
+                return NotFound($"Championship with ID {championshipId} not found.");
+            }
+
+            var category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
+            if (category == null)
+            {
+                return NotFound($"Category with ID {categoryId} not found.");
+            }
+
+            var championshipCategory = championship.ChampionshipCategories
+                .FirstOrDefault(cc => cc.CategoryId == categoryId);
+
+            if (!_championshipRepository.CategoryExistsInChampionship(championshipId, categoryId))
+            {
+                return NotFound("Category does not exist for the specified Championship.");
+            }
+
+            _championshipRepository.RemoveCategoryFromChampionship(championshipId, categoryId);
+            await _championshipRepository.SaveChangesAsync();
+
+            return NoContent();
+
+        }
 
         [HttpGet("{championshipId}/getCategories")]
         public async Task<IActionResult> GetCategoriesForChampionship(int championshipId)
         {
-            var categories = await _championshipRepository.GetCategoriesForChampionshipAsync(championshipId);
+            var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
 
-            if (categories == null || !categories.Any())
+            if (championship == null)
             {
-                return NotFound("No categories found for the specified Championship.");
+                return NotFound($"Championship with ID {championshipId} not found.");
             }
 
+            var categories = await _championshipRepository.GetCategoriesForChampionshipAsync(championshipId);
             var categoryDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories);
 
             return Ok(categoryDtos);
         }
+
 
     }
 }

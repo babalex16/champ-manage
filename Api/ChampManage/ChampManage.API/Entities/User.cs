@@ -79,7 +79,7 @@ namespace ChampManage.API
         Black
     }
     public enum UserType
-    {
+    {   
         Organizer,
         Participant
     }
