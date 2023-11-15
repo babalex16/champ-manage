@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using ChampManage.API.Entities;
+using ChampManage.API.Models;
 
 namespace ChampManage.API.Profiles
 {
@@ -9,6 +11,7 @@ namespace ChampManage.API.Profiles
             CreateMap<Entities.User, Models.UserDto>();
             CreateMap<Models.UserProfileCreationDto, Entities.User>();
             CreateMap<Entities.User, Models.UserProfileCreationDto>();
+            CreateMap<Entities.User, Models.UserPublicDto>();
         }
     }
 }

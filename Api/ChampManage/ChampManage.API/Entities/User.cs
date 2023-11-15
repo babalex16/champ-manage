@@ -10,6 +10,7 @@ namespace ChampManage.API.Entities
             FirstName = firstName;
             LastName = lastName;
             Email = email;
+            UserType = UserType.Participant;
         }
 
         [Key]
@@ -53,11 +54,11 @@ namespace ChampManage.API.Entities
 
         public UserType UserType { get; set; }
 
-        // For Organizers
+        [InverseProperty("Organizer")]
         public ICollection<Championship> CreatedChampionships { get; set; } 
             = new List<Championship>();
-        
-        // For Participants
+
+        [InverseProperty("Participants")]
         public ICollection<Championship> RegisteredChampionships { get; set; } 
             = new List<Championship>();
     }
@@ -81,6 +82,7 @@ namespace ChampManage.API
     public enum UserType
     {   
         Organizer,
-        Participant
+        Participant,
+        Admin
     }
 }

@@ -14,8 +14,11 @@ namespace ChampManage.API.Services
         Task<IEnumerable<Championship>> GetChampionshipsOfOrganizerAsync(int organizerId);
         Task<IEnumerable<Championship>> GetChampionshipsOfParticipantAsync(int participantId);
         Task<bool> UserExistsAsync(int userId);
-        Task<bool> IsEmailUniqueAsync(string email);
-        Task<bool> SaveChangesAsync();
         void DeleteUser(User user);
+        Task<bool> IsEmailUniqueAsync(string email);
+        Task<bool> CategoryExistsForUserInChampionship(int userId, int categoryId, int championshipId);
+        void RegisterUserForCategory(UserCategoryRegistrationDto userCategoryRegistrationDto);
+        Task<IEnumerable<User>> GetRegisteredUsersForCategory(int championshipId, int categoryId);
+        Task<bool> SaveChangesAsync();
     }
 }

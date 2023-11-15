@@ -19,7 +19,7 @@ namespace ChampManage.API.Entities
 
         [Required]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
-        public DateTime DateTime { get; set; }
+        public DateTime EventDateTime { get; set; }
         
         [Required]
         public decimal RegistrationFee{ get; set; }
@@ -37,11 +37,11 @@ namespace ChampManage.API.Entities
 
         public ICollection<ChampionshipCategory> ChampionshipCategories { get; set; }
             = new List<ChampionshipCategory>();
-        public Championship(string title, string location, DateTime dateTime, decimal registrationFee, int organizerId)
+        public Championship(string title, string location, DateTime eventDateTime, decimal registrationFee, int organizerId)
         {
             Title = title;
             Location = location;
-            DateTime = dateTime;
+            EventDateTime = eventDateTime;
             RegistrationFee = registrationFee;
             OrganizerId = organizerId;
         }

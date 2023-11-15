@@ -1,5 +1,6 @@
 ﻿using ChampManage.API.Data;
 using ChampManage.API.Entities;
+using ChampManage.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChampManage.API.Services
@@ -76,6 +77,36 @@ namespace ChampManage.API.Services
         public async Task<bool> UserExistsAsync(int userId)
         {
             return await _context.Users.AnyAsync(u => u.Id == userId);
+        }
+
+        public async Task<bool> CategoryExistsForUserInChampionship(int userId, int categoryId, int championshipId)
+        {
+            return await _context.UserCategoryRegistrations
+                .AnyAsync(ucr =>
+                    ucr.UserId == userId &&
+                    ucr.CategoryId == categoryId &&
+                    ucr.ChampionshipId == championshipId
+                );
+        }
+
+        public void RegisterUserForCategory(UserCategoryRegistrationDto userCategoryRegistrationDto)
+        {
+            var userCategoryRegistration = new UserCategoryRegistration
+            {
+                UserId = userCategoryRegistrationDto.UserId,
+                CategoryId = userCategoryRegistrationDto.CategoryId,
+                ChampionshipId = userCategoryRegistrationDto.ChampionshipId
+            };
+
+            _context.UserCategoryRegistrations.Add(userCategoryRegistration);
+        }
+
+        public async Task<IEnumerable<User>> GetRegisteredUsersForCategory(int championshipId, int categoryId)
+        {
+            return await _context.UserCategoryRegistrations
+                .Where(ucr => ucr.ChampionshipId == championshipId && ucr.CategoryId == categoryId)
+                .Select(ucr => ucr.User)
+                .ToListAsync();
         }
 
         public void DeleteUser(User user)

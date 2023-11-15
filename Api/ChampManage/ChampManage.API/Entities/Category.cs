@@ -34,9 +34,7 @@ namespace ChampManage.API.Entities
         public ICollection<ChampionshipCategory> ChampionshipCategories { get; set; }
             = new List<ChampionshipCategory>();
 
-        public ICollection<User> Participants { get; set; } 
-                = new List<User>();
-
+       
         public Category(string name, int minAge, int maxAge, int maxWeight, int fightTimeMinutes, BeltNames belt = BeltNames.White)
         {
             Name = name;

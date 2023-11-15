@@ -5,6 +5,7 @@ using ChampManage.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChampManage.API.Controllers
 {
@@ -14,22 +15,26 @@ namespace ChampManage.API.Controllers
     {
         private readonly IChampionshipRepository _championshipRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
         public ChampionshipsController( IChampionshipRepository championshipRepository,
                                         ICategoryRepository categoryRepository, 
+                                        IUserRepository userRepository,
                                         IMapper mapper)
         {
             _championshipRepository = championshipRepository ??
                 throw new ArgumentNullException(nameof(championshipRepository));
             _categoryRepository = categoryRepository ?? 
                 throw new ArgumentNullException(nameof(categoryRepository));
+            _userRepository = userRepository ?? 
+                throw new ArgumentNullException(nameof(userRepository));
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetChampionships()
+        public async Task<ActionResult<ChampionshipDto>> GetChampionships()
         {
             var championships = await _championshipRepository.GetChampionshipsAsync();
             var result = _mapper.Map<IEnumerable<ChampionshipDto>>(championships);
@@ -37,7 +42,7 @@ namespace ChampManage.API.Controllers
         }
 
         [HttpGet("{championshipId}", Name = "GetChampionship")]
-        public async Task<IActionResult> GetChampionship(int championshipId)
+        public async Task<ActionResult<ChampionshipDto>> GetChampionship(int championshipId)
         {
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
 
@@ -68,7 +73,9 @@ namespace ChampManage.API.Controllers
             var createdChampionshipDtoToReturn = _mapper.Map<ChampionshipDto>(championshipToCreate);
 
             return CreatedAtRoute("GetChampionship",
-                new { championshipId = createdChampionshipDtoToReturn.Id },
+                new {
+                    championshipId = createdChampionshipDtoToReturn.Id 
+                },
                 createdChampionshipDtoToReturn);
         }
 
@@ -179,7 +186,7 @@ namespace ChampManage.API.Controllers
 
         }
 
-        [HttpGet("{championshipId}/getCategories")]
+        [HttpGet("{championshipId}/getCategories", Name = "GetCategoriesForChampionship")]
         public async Task<IActionResult> GetCategoriesForChampionship(int championshipId)
         {
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
@@ -193,6 +200,85 @@ namespace ChampManage.API.Controllers
             var categoryDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories);
 
             return Ok(categoryDtos);
+        }
+
+        [HttpPost("{championshipId}/categories/registerUser")]
+        public async Task<IActionResult> RegisterUserForCategory(
+            int championshipId,
+            [FromBody] UserCategoryRegistrationDto userCategoryRegistrationDto)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userCategoryRegistrationDto.UserId);
+            if (user == null)
+            {
+                return NotFound($"User with ID {userCategoryRegistrationDto.UserId} not found.");
+            }
+
+            var category = await _categoryRepository.GetCategoryByIdAsync(userCategoryRegistrationDto.CategoryId);
+            if (category == null)
+            {
+                return NotFound($"Category with ID {userCategoryRegistrationDto.CategoryId} not found.");
+            }
+
+            var championship = await _championshipRepository.GetChampionshipByIdAsync(userCategoryRegistrationDto.ChampionshipId);
+            if (championship == null)
+            {
+                return NotFound($"Championship with ID {userCategoryRegistrationDto.ChampionshipId} not found.");
+            }
+
+            if (await _userRepository.CategoryExistsForUserInChampionship(
+                userCategoryRegistrationDto.UserId,
+                userCategoryRegistrationDto.CategoryId,
+                userCategoryRegistrationDto.ChampionshipId))
+            {
+                return Conflict("User is already registered for the specified category in the championship.");
+            }
+
+            _userRepository.RegisterUserForCategory(userCategoryRegistrationDto);
+
+            await _userRepository.SaveChangesAsync();
+
+            return CreatedAtRoute(
+                routeName: "GetRegisteredUsersForCategory",
+                routeValues: new
+                {
+                    championshipId = userCategoryRegistrationDto.ChampionshipId,
+                    categoryId = userCategoryRegistrationDto.CategoryId,
+                    userId = userCategoryRegistrationDto.UserId
+                },
+                value: "User successfully registered for the category in the championship.");
+        }
+
+
+        [HttpGet("{championshipId}/categories/{categoryId}", Name = "GetRegisteredUsersForCategory")]
+        public async Task<IActionResult> GetRegisteredUsersForCategory(int championshipId, int categoryId)
+        {
+            // Check if the championship and category exist
+            var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
+            if (championship == null)
+            {
+                return NotFound($"Championship with ID {championshipId} not found.");
+            }
+
+            var category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
+            if (category == null)
+            {
+                return NotFound($"Category with ID {categoryId} not found.");
+            }
+
+            var userCategoryRegistrations = await _userRepository.GetRegisteredUsersForCategory(championshipId, categoryId);
+
+            var registeredUsers = new List<UserPublicDto>(); // Use UserPublicDto instead of User
+            foreach (var userCategoryRegistration in userCategoryRegistrations)
+            {
+                var user = await _userRepository.GetUserByIdAsync(userCategoryRegistration.Id);
+                if (user != null)
+                {
+                    var userPublicDto = _mapper.Map<UserPublicDto>(user);
+                    registeredUsers.Add(userPublicDto);
+                }
+            }
+
+            return Ok(registeredUsers);
         }
 
 
