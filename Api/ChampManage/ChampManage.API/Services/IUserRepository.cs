@@ -19,6 +19,8 @@ namespace ChampManage.API.Services
         Task<bool> CategoryExistsForUserInChampionship(int userId, int categoryId, int championshipId);
         void RegisterUserForCategory(UserCategoryRegistrationDto userCategoryRegistrationDto);
         Task<IEnumerable<User>> GetRegisteredUsersForCategory(int championshipId, int categoryId);
+        Task<UserCategoryRegistration?> GetUserCategoryRegistration(int championshipId, int categoryId, int userId);
+        void DeregisterUserFromCategory(UserCategoryRegistration userCategoryRegistration);
         Task<bool> SaveChangesAsync();
     }
 }

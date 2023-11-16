@@ -113,11 +113,11 @@ namespace ChampManage.API.Services
                 .ToList();
         }
 
-        public bool CategoryExistsInChampionship(int championshipId, int categoryId)
+        public async Task<bool> CategoryExistsInChampionshipAsync(int championshipId, int categoryId)
         {
             // Check if the category with the specified ID is already associated with the championship
-            return _context.ChampionshipCategories
-                .Any(cc => cc.ChampionshipId == championshipId && cc.CategoryId == categoryId);
+            return await _context.ChampionshipCategories
+                .AnyAsync(cc => cc.ChampionshipId == championshipId && cc.CategoryId == categoryId);
         }
 
         //Marks the championship entity as modified, which signals to Entity

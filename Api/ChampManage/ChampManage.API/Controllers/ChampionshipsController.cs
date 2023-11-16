@@ -143,7 +143,7 @@ namespace ChampManage.API.Controllers
                 return NotFound("Championship not found.");
             }
 
-            if (_championshipRepository.CategoryExistsInChampionship(championshipId, categoryId))
+            if (await _championshipRepository.CategoryExistsInChampionshipAsync(championshipId, categoryId))
             {
                 return Conflict("Category already exists for the specified Championship.");
             }
@@ -174,7 +174,7 @@ namespace ChampManage.API.Controllers
             var championshipCategory = championship.ChampionshipCategories
                 .FirstOrDefault(cc => cc.CategoryId == categoryId);
 
-            if (!_championshipRepository.CategoryExistsInChampionship(championshipId, categoryId))
+            if (! await _championshipRepository.CategoryExistsInChampionshipAsync(championshipId, categoryId))
             {
                 return NotFound("Category does not exist for the specified Championship.");
             }
@@ -252,7 +252,6 @@ namespace ChampManage.API.Controllers
         [HttpGet("{championshipId}/categories/{categoryId}", Name = "GetRegisteredUsersForCategory")]
         public async Task<IActionResult> GetRegisteredUsersForCategory(int championshipId, int categoryId)
         {
-            // Check if the championship and category exist
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
             if (championship == null)
             {
@@ -263,6 +262,13 @@ namespace ChampManage.API.Controllers
             if (category == null)
             {
                 return NotFound($"Category with ID {categoryId} not found.");
+            }
+
+            // Check if the category is registered for the championship
+            var isCategoryRegistered = await _championshipRepository.CategoryExistsInChampionshipAsync(championshipId, categoryId);
+            if (!isCategoryRegistered)
+            {
+                return BadRequest($"Category with ID {categoryId} is not registered for the championship.");
             }
 
             var userCategoryRegistrations = await _userRepository.GetRegisteredUsersForCategory(championshipId, categoryId);
@@ -281,6 +287,43 @@ namespace ChampManage.API.Controllers
             return Ok(registeredUsers);
         }
 
+        [HttpDelete("{championshipId}/categories/{categoryId}/deregisterUser")]
+        public async Task<IActionResult> DeregisterUserFromCategory(
+                int championshipId, 
+                int categoryId,
+                [FromBody] int userId)
+        {
+            var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
+            if (championship == null)
+            {
+                return NotFound($"Championship with ID {championshipId} not found.");
+            }
+
+            var category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
+            if (category == null)
+            {
+                return NotFound($"Category with ID {categoryId} not found.");
+            }
+
+            var user = await _userRepository.GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound($"User with ID {userId} not found.");
+            }
+
+            // Check if the user is registered for the specified category in the championship
+            var userCategoryRegistration = await _userRepository.GetUserCategoryRegistration(championshipId, categoryId, userId);
+            if (userCategoryRegistration == null)
+            {
+                return NotFound("User is not registered for the specified category in the championship.");
+            }
+
+            _userRepository.DeregisterUserFromCategory(userCategoryRegistration);
+
+            await _userRepository.SaveChangesAsync();
+
+            return NoContent(); 
+        }
 
     }
 }

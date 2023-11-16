@@ -16,7 +16,7 @@ namespace ChampManage.API.Services
         void AddCategoryToChampionship(int championshipId, int categoryId);
         void RemoveCategoryFromChampionship(int championshipId, int categoryId);
         Task<IEnumerable<Category>> GetCategoriesForChampionshipAsync(int championshipId);
-        bool CategoryExistsInChampionship(int championshipId, int categoryId);
+        Task<bool> CategoryExistsInChampionshipAsync(int championshipId, int categoryId);
         void UpdateChampionship(Championship championship);
         Task<bool> SaveChangesAsync();
     }

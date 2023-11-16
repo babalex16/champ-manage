@@ -109,6 +109,19 @@ namespace ChampManage.API.Services
                 .ToListAsync();
         }
 
+        public async Task<UserCategoryRegistration?> GetUserCategoryRegistration(int championshipId, int categoryId, int userId)
+        {
+            return await _context.UserCategoryRegistrations
+                .SingleOrDefaultAsync(ucr => ucr.ChampionshipId == championshipId &&
+                                               ucr.CategoryId == categoryId &&
+                                               ucr.UserId == userId);
+        }
+
+        public void DeregisterUserFromCategory(UserCategoryRegistration userCategoryRegistration)
+        {
+            _context.UserCategoryRegistrations.Remove(userCategoryRegistration);
+        }
+
         public void DeleteUser(User user)
         {
             _context.Users.Remove(user);
