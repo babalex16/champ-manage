@@ -28,7 +28,7 @@ function RegistrationForm() {
 
         try {
             //Perforing API request
-            const response = await fetch('/api/account/register', {
+            const response = await fetch('https://localhost:7200/api/account/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
