@@ -1,5 +1,6 @@
 ﻿using ChampManage.API.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace ChampManage.API.Data
 {
@@ -10,11 +11,11 @@ namespace ChampManage.API.Data
         {
 
         }
-        public DbSet<Championship> Championships { get; set; } = null!;
-        public DbSet<User> Users { get; set; } = null!;
-        public DbSet<Match> Matches { get; set; } = null!;
+        public DbSet<BracketNode> Matches { get; set; }
         public DbSet<Category> Categories { get; set; } = null!;
+        public DbSet<Championship> Championships { get; set; } = null!;
         public DbSet<ChampionshipCategory> ChampionshipCategories { get; set; } = null!;
+        public DbSet<User> Users { get; set; } = null!;
         public DbSet<UserCategoryRegistration> UserCategoryRegistrations { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,39 +25,50 @@ namespace ChampManage.API.Data
                 .WithMany(u => u.CreatedChampionships)
                 .HasForeignKey(c => c.OrganizerId);
 
+            modelBuilder.Entity<BracketNode>()
+                .HasOne(b => b.LeftChild)
+                .WithOne()
+                .HasForeignKey<BracketNode>(b => b.LeftChildId);
+
+            modelBuilder.Entity<BracketNode>()
+                .HasOne(b => b.RightChild)
+                .WithOne()
+                .HasForeignKey<BracketNode>(b => b.RightChildId);
+
+
             // Defining a list of matches for each championship
-//            var championship1Matches = new List<Match>
-//{
-//                new Match
-//                {
-//                    Id = 1,
-//                    Participant1Id = 1,
-//                    Participant2Id = 2,
-//                    WinnerId = 1,
-//                },
-//            };
+            //            var championship1Matches = new List<Match>
+            //{
+            //                new Match
+            //                {
+            //                    Id = 1,
+            //                    Participant1Id = 1,
+            //                    Participant2Id = 2,
+            //                    WinnerId = 1,
+            //                },
+            //            };
 
-//            var championship2Matches = new List<Match>
-//            {
-//                new Match
-//                {
-//                    Id = 2,
-//                    Participant1Id = 3,
-//                    Participant2Id = 4,
-//                    WinnerId = 3,
-//                },
-//            };
+            //            var championship2Matches = new List<Match>
+            //            {
+            //                new Match
+            //                {
+            //                    Id = 2,
+            //                    Participant1Id = 3,
+            //                    Participant2Id = 4,
+            //                    WinnerId = 3,
+            //                },
+            //            };
 
-//            var championship3Matches = new List<Match>
-//            {
-//                new Match
-//                {
-//                    Id = 3,
-//                    Participant1Id = 5,
-//                    Participant2Id = 6,
-//                    WinnerId = 5,
-//                },
-//            };
+            //            var championship3Matches = new List<Match>
+            //            {
+            //                new Match
+            //                {
+            //                    Id = 3,
+            //                    Participant1Id = 5,
+            //                    Participant2Id = 6,
+            //                    WinnerId = 5,
+            //                },
+            //            };
 
             // Seeding Championships
             modelBuilder.Entity<Championship>().HasData(

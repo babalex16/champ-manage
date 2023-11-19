@@ -3,6 +3,7 @@ using System;
 using ChampManage.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChampManage.API.Migrations
 {
     [DbContext(typeof(ChampManageContext))]
-    partial class ChampManageContextModelSnapshot : ModelSnapshot
+    [Migration("20231119182732_ChangeMatchWinner")]
+    partial class ChangeMatchWinner
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
@@ -61,7 +63,8 @@ namespace ChampManage.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChampionshipCategoryId");
+                    b.HasIndex("ChampionshipCategoryId")
+                        .IsUnique();
 
                     b.HasIndex("LeftChildId")
                         .IsUnique();
@@ -442,8 +445,8 @@ namespace ChampManage.API.Migrations
             modelBuilder.Entity("ChampManage.API.Entities.BracketNode", b =>
                 {
                     b.HasOne("ChampManage.API.Entities.ChampionshipCategory", "ChampionshipCategory")
-                        .WithMany("CategoryMatches")
-                        .HasForeignKey("ChampionshipCategoryId")
+                        .WithOne("Bracket")
+                        .HasForeignKey("ChampManage.API.Entities.BracketNode", "ChampionshipCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -543,7 +546,8 @@ namespace ChampManage.API.Migrations
 
             modelBuilder.Entity("ChampManage.API.Entities.ChampionshipCategory", b =>
                 {
-                    b.Navigation("CategoryMatches");
+                    b.Navigation("Bracket")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ChampManage.API.Entities.User", b =>

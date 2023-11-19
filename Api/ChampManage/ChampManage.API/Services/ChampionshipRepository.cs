@@ -32,28 +32,6 @@ namespace ChampManage.API.Services
             _context.Championships.Remove(championship);
         }
 
-        public async Task AddParticipantToChampionshipAsync(int championshipId, int userId)
-        {
-            var championship = await _context.Championships.FindAsync(championshipId);
-            var user = await _context.Users.FindAsync(userId);
-
-            if (championship != null && user != null)
-            {
-                championship.Participants.Add(user);
-            }
-        }
-
-        public async Task RemoveParticipantFromChampionshipAsync(int championshipId, int userId)
-        {
-            var championship = await _context.Championships.FindAsync(championshipId);
-            var user = await _context.Users.FindAsync(userId);
-
-            if (championship != null && user != null)
-            {
-                championship.Participants.Remove(user);
-            }
-        }
-
         public async Task<IEnumerable<User>> GetParticipantsForChampionshipAsync(int championshipId)
         {
             return await _context.Users

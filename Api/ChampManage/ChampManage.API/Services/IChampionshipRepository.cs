@@ -9,8 +9,6 @@ namespace ChampManage.API.Services
         void CreateChampionship(Championship championship);
         void DeleteChampionship(Championship championship);
         Task<IEnumerable<User>> GetParticipantsForChampionshipAsync(int championshipId);
-        Task AddParticipantToChampionshipAsync(int championshipId, int userId);
-        Task RemoveParticipantFromChampionshipAsync(int championshipId, int userId);
         Task<User> GetCreatorForChampionshipAsync(int championshipId);
         Task<IEnumerable<Championship>> GetChampionshipsCreatedByUserAsync(int userId);
         void AddCategoryToChampionship(int championshipId, int categoryId);

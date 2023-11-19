@@ -9,6 +9,8 @@ namespace ChampManage.API.Services
         //Task<IEnumerable<Category>> GetCategoriesByIdsAsync(IEnumerable<int> categoryIds);
         void AddCategory(Category category);
         void DeleteCategory(Category category);
+        void CreateMatchesForChampionship(int championshipId);
+        List<BracketNode> GetMatchesForChampionship(int championshipId);
         Task<bool> SaveChangesAsync();
     }
 }

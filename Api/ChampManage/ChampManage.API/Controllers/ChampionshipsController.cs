@@ -70,6 +70,8 @@ namespace ChampManage.API.Controllers
             _championshipRepository.CreateChampionship(championshipToCreate);
             await _championshipRepository.SaveChangesAsync();
 
+            //TODO: add champ to User's CreatedChampionships collection
+
             var createdChampionshipDtoToReturn = _mapper.Map<ChampionshipDto>(championshipToCreate);
 
             return CreatedAtRoute("GetChampionship",
@@ -92,6 +94,8 @@ namespace ChampManage.API.Controllers
 
             _championshipRepository.DeleteChampionship(championshipEntity);
             await _championshipRepository.SaveChangesAsync();
+
+            //TODO: remove from User's CreatedChampionships collection
 
             return NoContent();
         }
@@ -190,13 +194,16 @@ namespace ChampManage.API.Controllers
         public async Task<IActionResult> GetCategoriesForChampionship(int championshipId)
         {
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
-
             if (championship == null)
             {
                 return NotFound($"Championship with ID {championshipId} not found.");
             }
 
             var categories = await _championshipRepository.GetCategoriesForChampionshipAsync(championshipId);
+            if (categories == null)
+            {
+                return NotFound("No categories associated with the following championship");
+            }
             var categoryDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories);
 
             return Ok(categoryDtos);
@@ -234,6 +241,8 @@ namespace ChampManage.API.Controllers
             }
 
             _userRepository.RegisterUserForCategory(userCategoryRegistrationDto);
+
+            // Note: don't add championship to RegisteredChampionships, it is already done
 
             await _userRepository.SaveChangesAsync();
 
@@ -273,7 +282,7 @@ namespace ChampManage.API.Controllers
 
             var userCategoryRegistrations = await _userRepository.GetRegisteredUsersForCategory(championshipId, categoryId);
 
-            var registeredUsers = new List<UserPublicDto>(); // Use UserPublicDto instead of User
+            var registeredUsers = new List<UserPublicDto>(); 
             foreach (var userCategoryRegistration in userCategoryRegistrations)
             {
                 var user = await _userRepository.GetUserByIdAsync(userCategoryRegistration.Id);
@@ -287,11 +296,10 @@ namespace ChampManage.API.Controllers
             return Ok(registeredUsers);
         }
 
-        [HttpDelete("{championshipId}/categories/{categoryId}/deregisterUser")]
+        [HttpDelete("{championshipId}/deregisterUser")]
         public async Task<IActionResult> DeregisterUserFromCategory(
                 int championshipId, 
-                int categoryId,
-                [FromBody] int userId)
+                [FromBody] UserCategoryRegistrationDto userCategoryRegistrationDto)
         {
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
             if (championship == null)
@@ -299,31 +307,115 @@ namespace ChampManage.API.Controllers
                 return NotFound($"Championship with ID {championshipId} not found.");
             }
 
-            var category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
+            var category = await _categoryRepository.GetCategoryByIdAsync(userCategoryRegistrationDto.CategoryId);
             if (category == null)
             {
-                return NotFound($"Category with ID {categoryId} not found.");
+                return NotFound($"Category with ID {userCategoryRegistrationDto.CategoryId} not found.");
             }
 
-            var user = await _userRepository.GetUserByIdAsync(userId);
+            var user = await _userRepository.GetUserByIdAsync(userCategoryRegistrationDto.UserId);
             if (user == null)
             {
-                return NotFound($"User with ID {userId} not found.");
+                return NotFound($"User with ID {userCategoryRegistrationDto.UserId} not found.");
             }
 
             // Check if the user is registered for the specified category in the championship
-            var userCategoryRegistration = await _userRepository.GetUserCategoryRegistration(championshipId, categoryId, userId);
+            var userCategoryRegistration = await _userRepository.GetUserCategoryRegistration(championshipId, userCategoryRegistrationDto.CategoryId, userCategoryRegistrationDto.UserId);
             if (userCategoryRegistration == null)
             {
                 return NotFound("User is not registered for the specified category in the championship.");
             }
 
             _userRepository.DeregisterUserFromCategory(userCategoryRegistration);
+            // Note: don't remove championship from RegisteredChampionships, it is already done
 
             await _userRepository.SaveChangesAsync();
 
             return NoContent(); 
         }
 
+        [HttpPost("{championshipId}/createMatches")]
+        public async Task<IActionResult> CreateMatchesForChampionship(int championshipId)
+        {
+            var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
+            if (championship == null)
+            {
+                return NotFound($"Championship with ID {championshipId} not found.");
+            }
+
+            var categories = await _championshipRepository.GetCategoriesForChampionshipAsync(championshipId);
+            if (categories == null)
+            {
+                return NotFound("No categories associated with the following championship");
+            }
+
+            _categoryRepository.CreateMatchesForChampionship(championshipId);
+
+            await _categoryRepository.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpGet("{championshipId}/matches")]
+        public async Task<IActionResult> GetMatchesForChampionship(int championshipId)
+        {
+            var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
+            if (championship == null)
+            {
+                return NotFound($"Championship with ID {championshipId} not found.");
+            }
+
+            var matches = _categoryRepository.GetMatchesForChampionship(championshipId)
+                .Select(match => new MatchRetrievalDto
+                {
+                    Order = match.Order,
+
+                    // Participant1
+                    Participant1FullName = GetFullName(match.Participant1),
+                    Participant1TeamName = match.Participant1?.TeamName ?? string.Empty,
+                    Participant1Age = CalculateAge(match.Participant1?.Birthdate),
+
+                    // Participant2
+                    Participant2FullName = GetFullName(match.Participant2),
+                    Participant2TeamName = match.Participant2?.TeamName ?? string.Empty,
+                    Participant2Age = CalculateAge(match.Participant2?.Birthdate),
+
+                    // Winner
+                    IsParticipant1Winner = match.IsParticipant1Winner,
+                });
+
+            return Ok(matches);
+        }
+
+        // Helper method to calculate age
+        private static int? CalculateAge(DateTime? birthdate)
+        {
+            if (birthdate == null)
+            {
+                return null;
+            }
+
+            DateTime currentDate = DateTime.UtcNow;
+            int age = currentDate.Year - birthdate.Value.Year;
+
+            // Check if the birthday has occurred this year
+            if (birthdate.Value.Date > currentDate.AddYears(-age))
+            {
+                age--;
+            }
+
+            return age;
+        }
+
+        // Helper method to get full name
+        private static string GetFullName(User? user)
+        {
+            if (user == null)
+            {
+                return string.Empty;
+            }
+
+            return $"{user.FirstName} {user.LastName}";
+        }
     }
 }
