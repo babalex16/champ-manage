@@ -17,6 +17,7 @@ namespace ChampManage.API.Data
         public DbSet<ChampionshipCategory> ChampionshipCategories { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<UserCategoryRegistration> UserCategoryRegistrations { get; set; } = null!;
+        public DbSet<News> News { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

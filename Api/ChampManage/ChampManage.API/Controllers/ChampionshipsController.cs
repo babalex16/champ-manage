@@ -387,6 +387,24 @@ namespace ChampManage.API.Controllers
             return Ok(matches);
         }
 
+        [HttpDelete("{championshipId}/deleteMatches")]
+        public async Task<IActionResult> DeleteMatchesForChampionship(int championshipId)
+        {
+            var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
+            if (championship == null)
+            {
+                return NotFound($"Championship with ID {championshipId} not found.");
+            }
+
+            // Call a method in your repository to delete matches for the given championshipId
+            _categoryRepository.DeleteMatchesForChampionship(championshipId);
+
+            await _categoryRepository.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+
         // Helper method to calculate age
         private static int? CalculateAge(DateTime? birthdate)
         {
