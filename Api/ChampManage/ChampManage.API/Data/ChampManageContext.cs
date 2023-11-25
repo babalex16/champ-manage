@@ -72,26 +72,26 @@ namespace ChampManage.API.Data
             //            };
 
             // Seeding Championships
-            modelBuilder.Entity<Championship>().HasData(
-                new Championship("Championship 1", "Location 1", new DateTime(2023, 1, 15), 50.00m, 1)
-                {
-                    Id = 1,
-                    RegistrationDeadline = new DateTime(2023, 1, 15),
-                    Description = "Description of Championship 1",
-                },
-                new Championship("Championship 2", "Location 2", new DateTime(2023, 2, 20), 40.00m, 2)
-                {
-                    Id = 2,
-                    RegistrationDeadline = new DateTime(2023, 2, 20),
-                    Description = "Description of Championship 2",
-                },
-                new Championship("Championship 3", "Location 3", new DateTime(2023, 3, 25), 60.00m, 3)
-                {
-                    Id = 3,
-                    RegistrationDeadline = new DateTime(2023, 3, 25),
-                    Description = "Description of Championship 3",
-                }
-            );
+            //modelBuilder.Entity<Championship>().HasData(
+            //    new Championship("Championship 1", "Location 1", new DateTime(2023, 1, 15), 50.00m, 1)
+            //    {
+            //        Id = 1,
+            //        RegistrationDeadline = new DateTime(2023, 1, 15),
+            //        Description = "Description of Championship 1",
+            //    },
+            //    new Championship("Championship 2", "Location 2", new DateTime(2023, 2, 20), 40.00m, 2)
+            //    {
+            //        Id = 2,
+            //        RegistrationDeadline = new DateTime(2023, 2, 20),
+            //        Description = "Description of Championship 2",
+            //    },
+            //    new Championship("Championship 3", "Location 3", new DateTime(2023, 3, 25), 60.00m, 3)
+            //    {
+            //        Id = 3,
+            //        RegistrationDeadline = new DateTime(2023, 3, 25),
+            //        Description = "Description of Championship 3",
+            //    }
+            //);
             /*
             // Seeding Users
             modelBuilder.Entity<User>().HasData(

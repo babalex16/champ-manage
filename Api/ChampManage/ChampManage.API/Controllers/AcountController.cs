@@ -16,13 +16,17 @@ namespace ChampManage.API.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly ITokenService _tokenService;
+        private readonly IConfiguration _configuration;
 
         public AcountController(IUserRepository userRepository,
-                                ITokenService tokenService)
+                                ITokenService tokenService,
+                                IConfiguration configuration)
         {
             _userRepository = userRepository ??
                  throw new ArgumentNullException(nameof(userRepository));
             _tokenService = tokenService ??
+                 throw new ArgumentNullException(nameof(tokenService));
+            _configuration = configuration ??
                  throw new ArgumentNullException(nameof(tokenService));
         }
 
@@ -44,6 +48,11 @@ namespace ChampManage.API.Controllers
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userRegisterDto.Password)),
                 PasswordSalt = hmac.Key
             };
+
+            if (user.Email.Equals(_configuration["AdminEmail"]))
+            {
+                user.UserType = UserType.Admin;
+            }
 
             await _userRepository.CreateUserAsync(user);
             await _userRepository.SaveChangesAsync();

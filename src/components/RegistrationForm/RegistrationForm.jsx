@@ -28,7 +28,7 @@ function RegistrationForm() {
 
         try {
             //Perforing API request
-            const response = await fetch('https://localhost:7200/api/account/register', {
+            const response = await fetch(`${process.env.REACT_APP_CHAMP_MANAGE_API}/api/account/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

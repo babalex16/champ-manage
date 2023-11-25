@@ -93,5 +93,26 @@ namespace ChampManage.API.Controllers
 
             return NoContent();
         }
+
+        [HttpPatch("makeAdmin")]
+        public async Task<ActionResult<UserDto>> MakeUserAdmin([FromBody] UserEmailDto userEmailDto)
+        {
+            if (userEmailDto == null || string.IsNullOrEmpty(userEmailDto.Email))
+            {
+                return BadRequest("Invalid email data.");
+            }
+
+            var user = await _userRepository.GetUserByEmailAsync(userEmailDto.Email);
+
+            if (user == null)
+            {
+                return NotFound($"User with email '{userEmailDto.Email}' not found.");
+            }
+
+            user.UserType = UserType.Admin;
+            await _userRepository.SaveChangesAsync();
+
+            return Ok(_mapper.Map<UserDto>(user));
+        }
     }
 }
