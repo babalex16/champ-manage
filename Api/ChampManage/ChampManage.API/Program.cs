@@ -49,10 +49,36 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Services.AddAuthorization(options =>
 {
+    options.AddPolicy("AdminOnly", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("user_type", UserType.Admin.ToString());
+    });
+
     options.AddPolicy("OrganizerOnly", policy =>
     {
         policy.RequireAuthenticatedUser();
         policy.RequireClaim("user_type", UserType.Organizer.ToString());
+    });
+
+    options.AddPolicy("AdminOrOrganizerOnly", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireAssertion(context =>
+        {
+            var userTypeClaim = context.User.FindFirst("user_type")?.Value;
+            return userTypeClaim == UserType.Admin.ToString() || userTypeClaim == UserType.Organizer.ToString();
+        });
+    });
+
+    options.AddPolicy("ParticipantOnly", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("user_type", UserType.Participant.ToString());
+    });
+    options.AddPolicy("RegisteredUserOnly", policy =>
+    {
+        policy.RequireAuthenticatedUser();
     });
 });
 

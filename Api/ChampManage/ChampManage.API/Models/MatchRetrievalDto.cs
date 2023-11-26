@@ -2,6 +2,8 @@
 {
     public class MatchRetrievalDto
     {
+        // Category
+        public string CategoryName { get; set; } = string.Empty;
         public int Order { get; set; }
 
         // Participants
@@ -15,6 +17,7 @@
 
         // Winner
         public bool? IsParticipant1Winner { get; set; }
+
 
     }
 }

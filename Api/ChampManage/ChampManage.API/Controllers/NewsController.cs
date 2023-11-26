@@ -2,11 +2,13 @@
 using ChampManage.API.Entities;
 using ChampManage.API.Models;
 using ChampManage.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChampManage.API.Controllers
 {
+    [Authorize(Policy = "AdminOnly")]
     [Route("api/news")]
     [ApiController]
     public class NewsController : ControllerBase
@@ -20,6 +22,7 @@ namespace ChampManage.API.Controllers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NewsDto>>> GetNews()
         {
@@ -27,6 +30,7 @@ namespace ChampManage.API.Controllers
             return Ok(_mapper.Map<IEnumerable<NewsDto>>(news));
         }
 
+        [AllowAnonymous]
         [HttpGet("{newsId}", Name = "GetNewsById")]
         public async Task<ActionResult<NewsDto>> GetNewsById(int newsId)
         {

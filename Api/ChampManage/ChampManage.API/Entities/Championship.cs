@@ -37,6 +37,11 @@ namespace ChampManage.API.Entities
 
         public ICollection<ChampionshipCategory> ChampionshipCategories { get; set; }
             = new List<ChampionshipCategory>();
+
+        public Championship() // Parameterless constructor
+        {
+        }
+
         public Championship(string title, string location, DateTime eventDateTime, decimal registrationFee, int organizerId)
         {
             Title = title;

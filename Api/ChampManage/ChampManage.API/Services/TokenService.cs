@@ -20,8 +20,8 @@ namespace ChampManage.API.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.Email),
-                new Claim("user_type", user.UserType.ToString())
+                new Claim("user_type", user.UserType.ToString()),
+                new Claim("user_id", user.Id.ToString())
             };
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);

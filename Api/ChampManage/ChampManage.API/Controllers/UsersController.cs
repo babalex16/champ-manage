@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChampManage.API.Controllers
 {
+    [Authorize(Policy = "RegisteredUserOnly")]
     [Route("api/users")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -25,7 +26,6 @@ namespace ChampManage.API.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
             var userEntities = await _userRepository.GetUsersAsync();
@@ -33,7 +33,6 @@ namespace ChampManage.API.Controllers
             return Ok(_mapper.Map<IEnumerable<UserDto>>(userEntities));
         }
 
-        [Authorize]
         [HttpGet("{userId}", Name = "GetUser")]
         public async Task<ActionResult<UserDto>> GetUser(int userId)
         {
@@ -42,6 +41,24 @@ namespace ChampManage.API.Controllers
             {
                 return NotFound();
             }
+            return Ok(_mapper.Map<UserDto>(user));
+        }
+
+        [HttpGet("user")]
+        public async Task<ActionResult<UserDto>> GetUserByEmail([FromBody] UserEmailDto userEmailDto)
+        {
+            if (string.IsNullOrWhiteSpace(userEmailDto.Email))
+            {
+                return BadRequest("Email parameter is required.");
+            }
+
+            var user = await _userRepository.GetUserByEmailAsync(userEmailDto.Email);
+
+            if (user == null)
+            {
+                return NotFound($"User with email '{userEmailDto.Email}' not found.");
+            }
+
             return Ok(_mapper.Map<UserDto>(user));
         }
 
@@ -94,22 +111,43 @@ namespace ChampManage.API.Controllers
             return NoContent();
         }
 
-        [HttpPatch("makeAdmin")]
-        public async Task<ActionResult<UserDto>> MakeUserAdmin([FromBody] UserEmailDto userEmailDto)
+        [HttpPatch("giveOrganizerRights/{organizerEmail}")]
+        public async Task<ActionResult<UserDto>> GiveOrganizerRights(string organizerEmail)
         {
-            if (userEmailDto == null || string.IsNullOrEmpty(userEmailDto.Email))
+            if (organizerEmail == null || string.IsNullOrEmpty(organizerEmail))
             {
                 return BadRequest("Invalid email data.");
             }
 
-            var user = await _userRepository.GetUserByEmailAsync(userEmailDto.Email);
+            var user = await _userRepository.GetUserByEmailAsync(organizerEmail);
 
             if (user == null)
             {
-                return NotFound($"User with email '{userEmailDto.Email}' not found.");
+                return NotFound($"User with email '{organizerEmail}' not found.");
             }
 
-            user.UserType = UserType.Admin;
+            user.UserType = UserType.Organizer;
+            await _userRepository.SaveChangesAsync();
+
+            return Ok(_mapper.Map<UserDto>(user));
+        }
+
+        [HttpPatch("revokeOrganizerRights/{organizerEmail}")]
+        public async Task<ActionResult<UserDto>> RevokeOrganizerRights(string organizerEmail)
+        {
+            if (organizerEmail == null || string.IsNullOrEmpty(organizerEmail))
+            {
+                return BadRequest("Invalid email data.");
+            }
+
+            var user = await _userRepository.GetUserByEmailAsync(organizerEmail);
+
+            if (user == null)
+            {
+                return NotFound($"User with email '{organizerEmail}' not found.");
+            }
+
+            user.UserType = UserType.Participant;
             await _userRepository.SaveChangesAsync();
 
             return Ok(_mapper.Map<UserDto>(user));

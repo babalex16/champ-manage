@@ -194,8 +194,15 @@ namespace ChampManage.API.Services
                 _context.Matches.RemoveRange(matchesToDelete);
             }
         }
+        public string GetCategoryNameByChampionshipCategoryId(int championshipCategoryId)
+        {
+            var categoryName = _context.ChampionshipCategories
+                .Where(cc => cc.Id == championshipCategoryId)
+                .Select(cc => cc.Category.Name)
+                .FirstOrDefault();
 
-
+            return categoryName ?? string.Empty;
+        }
 
         public async Task<bool> SaveChangesAsync()
         {

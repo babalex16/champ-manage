@@ -28,3 +28,4 @@ appsettings.Development.json
 *.db
 Api/ChampManage/ChampManage.API/ChampManage.db-shm
 Api/ChampManage/ChampManage.API/ChampManage.db-wal
+Api/ChampManage/ChampManage.API/ChampManage.db

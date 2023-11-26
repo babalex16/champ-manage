@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChampManage.API.Controllers
 {
+    [Authorize(Policy = "AdminOrOrganizerOnly")]
     [Route("api/championships")]
     [ApiController]
     public class ChampionshipsController : ControllerBase
@@ -33,6 +34,7 @@ namespace ChampManage.API.Controllers
                 throw new ArgumentNullException(nameof(mapper));
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<ChampionshipDto>> GetChampionships()
         {
@@ -41,6 +43,7 @@ namespace ChampManage.API.Controllers
             return Ok(result);
         }
 
+        [AllowAnonymous]
         [HttpGet("{championshipId}", Name = "GetChampionship")]
         public async Task<ActionResult<ChampionshipDto>> GetChampionship(int championshipId)
         {
@@ -56,7 +59,6 @@ namespace ChampManage.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "OrganizerOnly")]
         public async Task<ActionResult<ChampionshipDto>> CreateChampionship(
                 ChampionshipForCreationDto championshipForCreationDto)
         {
@@ -91,6 +93,8 @@ namespace ChampManage.API.Controllers
             {
                 return NotFound();
             }
+
+            //TODO: check if provided OrganizerId is valid
 
             _championshipRepository.DeleteChampionship(championshipEntity);
             await _championshipRepository.SaveChangesAsync();
@@ -356,6 +360,7 @@ namespace ChampManage.API.Controllers
             return NoContent();
         }
 
+        [AllowAnonymous]
         [HttpGet("{championshipId}/matches")]
         public async Task<IActionResult> GetMatchesForChampionship(int championshipId)
         {
@@ -368,6 +373,8 @@ namespace ChampManage.API.Controllers
             var matches = _categoryRepository.GetMatchesForChampionship(championshipId)
                 .Select(match => new MatchRetrievalDto
                 {
+                    // Category
+                    CategoryName = _categoryRepository.GetCategoryNameByChampionshipCategoryId(match.ChampionshipCategoryId),
                     Order = match.Order,
 
                     // Participant1
@@ -382,6 +389,7 @@ namespace ChampManage.API.Controllers
 
                     // Winner
                     IsParticipant1Winner = match.IsParticipant1Winner,
+
                 });
 
             return Ok(matches);

@@ -2,10 +2,12 @@
 using ChampManage.API.Entities;
 using ChampManage.API.Models;
 using ChampManage.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChampManage.API.Controllers
 {
+    [Authorize(Policy = "AdminOnly")]
     [Route("api/categories")]
     [ApiController]
     public class CategoryController : ControllerBase
@@ -21,6 +23,7 @@ namespace ChampManage.API.Controllers
                throw new ArgumentNullException(nameof(mapper));
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
         {
@@ -28,6 +31,7 @@ namespace ChampManage.API.Controllers
             return Ok(_mapper.Map<IEnumerable<CategoryDto>>(categories));
         }
 
+        [AllowAnonymous]
         [HttpGet("{categoryId}", Name = "GetCategoryById")]
         public async Task<ActionResult<CategoryDto>> GetCategoryById(int categoryId)
         {
@@ -40,6 +44,7 @@ namespace ChampManage.API.Controllers
 
             return Ok(_mapper.Map<CategoryDto>(category));
         }
+
         [HttpPost]
         public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryDto categoryCreateDto)
         {

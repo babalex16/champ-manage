@@ -12,6 +12,7 @@ namespace ChampManage.API.Services
         void CreateMatchesForChampionship(int championshipId);
         List<BracketNode> GetMatchesForChampionship(int championshipId);
         void DeleteMatchesForChampionship(int championshipId);
+        string GetCategoryNameByChampionshipCategoryId(int championshipCategoryId);
         Task<bool> SaveChangesAsync();
     }
 }

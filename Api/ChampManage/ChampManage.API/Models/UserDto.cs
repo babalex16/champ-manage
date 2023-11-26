@@ -12,13 +12,6 @@
         public int Weight { get; set; }
         public BeltNames Belt { get; set; }
         public string Phone { get; set; } = string.Empty;
-        public UserType UserType { get; set; }
-
-        public ICollection<int> CreatedChampionships { get; set; }
-                = new List<int>();
-
-        public ICollection<int> RegisteredChampionships { get; set; }
-               = new List<int>();
 
     }
 
