@@ -6,11 +6,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Mime;
 
 namespace ChampManage.API.Controllers
 {
+    /// <summary>
+    /// API endpoints for managing championships.
+    /// </summary>
     [Authorize(Policy = "AdminOrOrganizerOnly")]
     [Route("api/championships")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [ApiController]
     public class ChampionshipsController : ControllerBase
     {
@@ -34,8 +40,12 @@ namespace ChampManage.API.Controllers
                 throw new ArgumentNullException(nameof(mapper));
         }
 
+        /// <summary>
+        /// Gets a list of championships.
+        /// </summary>
         [AllowAnonymous]
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ChampionshipDto>> GetChampionships()
         {
             var championships = await _championshipRepository.GetChampionshipsAsync();
@@ -43,8 +53,14 @@ namespace ChampManage.API.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Gets a championship by its ID.
+        /// </summary>
+        /// <param name="championshipId">The ID of the championship.</param>
         [AllowAnonymous]
         [HttpGet("{championshipId}", Name = "GetChampionship")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ChampionshipDto>> GetChampionship(int championshipId)
         {
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
@@ -58,7 +74,13 @@ namespace ChampManage.API.Controllers
             return Ok(championshipDto);
         }
 
+        /// <summary>
+        /// Creates a new championship.
+        /// </summary>
+        /// <param name="championshipForCreationDto">The data for the new championship.</param>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ChampionshipDto>> CreateChampionship(
                 ChampionshipForCreationDto championshipForCreationDto)
         {
@@ -83,7 +105,13 @@ namespace ChampManage.API.Controllers
                 createdChampionshipDtoToReturn);
         }
 
+        /// <summary>
+        /// Deletes a championship by its id.
+        /// </summary>
+        /// <param name="championshipId">The ID of the championship to delete.</param>
         [HttpDelete("{championshipId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteChampionship(int championshipId)
         {
 
@@ -104,7 +132,15 @@ namespace ChampManage.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Partially updates a championship by its id and the provided patch document.
+        /// </summary>
+        /// <param name="championshipId">The id of the championship to update.</param>
+        /// <param name="patchDoc">The patch document containing the updates to the championship.</param>
         [HttpPatch("{championshipId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PartiallyUpdateChampionship(
                 int championshipId,
                 JsonPatchDocument<ChampionshipForUpdateDto> patchDoc)
@@ -136,7 +172,15 @@ namespace ChampManage.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Adds a category to a championship.
+        /// </summary>
+        /// <param name="championshipId">The ID of the championship.</param>
+        /// <param name="categoryId">The ID of the category to add.</param>
         [HttpPost("{championshipId}/addCategory/{categoryId}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> AddCategoryToChampionship(int championshipId, int categoryId)
         {
             var category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
@@ -164,7 +208,14 @@ namespace ChampManage.API.Controllers
                 "Category added to championship successfully.");
         }
 
+        /// <summary>
+        /// Removes a category from a championship.
+        /// </summary>
+        /// <param name="championshipId">The ID of the championship.</param>
+        /// <param name="categoryId">The ID of the category to remove.</param>
         [HttpDelete("{championshipId}/removeCategory/{categoryId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> RemoveCategoryFromChampionship(int championshipId, int categoryId)
         {
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
@@ -191,10 +242,15 @@ namespace ChampManage.API.Controllers
             await _championshipRepository.SaveChangesAsync();
 
             return NoContent();
-
         }
 
+        /// <summary>
+        /// Gets the categories associated with a specific championship.
+        /// </summary>
+        /// <param name="championshipId">The id of the championship to get the categories for.</param>
         [HttpGet("{championshipId}/getCategories", Name = "GetCategoriesForChampionship")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetCategoriesForChampionship(int championshipId)
         {
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
@@ -213,7 +269,15 @@ namespace ChampManage.API.Controllers
             return Ok(categoryDtos);
         }
 
+        /// <summary>
+        /// Registers a user for a specific category in a championship.
+        /// </summary>
+        /// <param name="championshipId">The id of the championship to register the user for a category.</param>
+        /// <param name="userCategoryRegistrationDto">The user and category to register.</param>
         [HttpPost("{championshipId}/categories/registerUser")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> RegisterUserForCategory(
             int championshipId,
             [FromBody] UserCategoryRegistrationDto userCategoryRegistrationDto)
@@ -261,8 +325,15 @@ namespace ChampManage.API.Controllers
                 value: "User successfully registered for the category in the championship.");
         }
 
-
+        /// <summary>
+        /// Gets the registered users for a specific category in a championship.
+        /// </summary>
+        /// <param name="championshipId">The id of the championship to get the registered users for a category.</param>
+        /// <param name="categoryId">The id of the category to get the registered users for.</param>
         [HttpGet("{championshipId}/categories/{categoryId}", Name = "GetRegisteredUsersForCategory")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetRegisteredUsersForCategory(int championshipId, int categoryId)
         {
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
@@ -300,7 +371,14 @@ namespace ChampManage.API.Controllers
             return Ok(registeredUsers);
         }
 
+        /// <summary>
+        /// Removes a user from a category in a championship.
+        /// </summary>
+        /// <param name="championshipId">The id of the championship to remove the user from a category.</param>
+        /// <param name="userCategoryRegistrationDto">The user and category to remove.</param>
         [HttpDelete("{championshipId}/deregisterUser")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeregisterUserFromCategory(
                 int championshipId, 
                 [FromBody] UserCategoryRegistrationDto userCategoryRegistrationDto)
@@ -338,7 +416,13 @@ namespace ChampManage.API.Controllers
             return NoContent(); 
         }
 
+        /// <summary>
+        /// Creates matches for all categories in a championship.
+        /// </summary>
+        /// <param name="championshipId">The id of the championship to create matches for.</param>
         [HttpPost("{championshipId}/createMatches")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> CreateMatchesForChampionship(int championshipId)
         {
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
@@ -360,8 +444,14 @@ namespace ChampManage.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Gets all matches for a championship.
+        /// </summary>
+        /// <param name="championshipId">The id of the championship to get matches for.</param>
         [AllowAnonymous]
         [HttpGet("{championshipId}/matches")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetMatchesForChampionship(int championshipId)
         {
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
@@ -395,7 +485,13 @@ namespace ChampManage.API.Controllers
             return Ok(matches);
         }
 
+        /// <summary>
+        /// Deletes all matches for a championship.
+        /// </summary>
+        /// <param name="championshipId">The id of the championship to delete matches for.</param>
         [HttpDelete("{championshipId}/deleteMatches")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteMatchesForChampionship(int championshipId)
         {
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
@@ -413,7 +509,7 @@ namespace ChampManage.API.Controllers
         }
 
 
-        // Helper method to calculate age
+        // Helper method to calculate age  based on the provided birthdate.
         private static int? CalculateAge(DateTime? birthdate)
         {
             if (birthdate == null)

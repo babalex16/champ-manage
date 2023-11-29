@@ -3,11 +3,12 @@ using ChampManage.API.Data;
 using ChampManage.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers(options =>
 {
@@ -19,7 +20,26 @@ builder.Services.AddControllers(options =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(setupAction =>
+{
+    setupAction.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Championship Management API",
+        Description = "Web API that allows managing Users, Categories, News and Matches of different Championships",
+        Contact = new OpenApiContact
+        {
+            Name = "Alexandr Babii",
+            Email = "sasha.babii2001@gmail.com",
+            Url = new Uri ( "https://www.linkedin.com/in/alexandr-babii/"),
+        },
+        Version = "v1"
+    });
+
+    var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+
+    setupAction.IncludeXmlComments(xmlCommentsFullPath);
+});
 
 builder.Services.AddDbContext<ChampManageContext>(DbContextOptions =>
          DbContextOptions.UseSqlite(

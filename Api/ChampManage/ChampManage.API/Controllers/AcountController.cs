@@ -5,12 +5,18 @@ using ChampManage.API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace ChampManage.API.Controllers
 {
+    /// <summary>
+    /// API endpoints for managing user accounts.
+    /// </summary>
     [Route("api/account")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [ApiController]
     public class AcountController : ControllerBase
     {
@@ -30,7 +36,13 @@ namespace ChampManage.API.Controllers
                  throw new ArgumentNullException(nameof(tokenService));
         }
 
+        /// <summary>
+        /// Registers a new user account.
+        /// </summary>
+        /// <param name="userRegisterDto">The data for the new user account.</param>
         [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<UserLogInDto>> Register (UserRegisterDto userRegisterDto)
         {
             // Check if the email is unique
@@ -63,10 +75,16 @@ namespace ChampManage.API.Controllers
                 Token = _tokenService.CreateToken(user)
             };
 
-            return userToReturn;
+            return Ok(userToReturn);
         }
 
+        /// <summary>
+        /// Logs in a user.
+        /// </summary>
+        /// <param name="loginDto">The login credentials.</param>
         [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<UserLogInDto>> Login (LoginDto loginDto)
         {
             var user = await _userRepository.GetUserByEmailAsync(loginDto.Email);
@@ -94,7 +112,7 @@ namespace ChampManage.API.Controllers
                 Token = _tokenService.CreateToken(user)
             };
 
-            return userToReturn;
+            return Ok(userToReturn);
         }
     }
 }

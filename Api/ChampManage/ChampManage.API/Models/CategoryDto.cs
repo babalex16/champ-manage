@@ -7,7 +7,7 @@
         public int MinAge { get; set; }
         public int MaxAge { get; set; }
         public int MaxWeight { get; set; }
-        public BeltNames Belt { get; set; }
+        public string Belt { get; set; }
         public int FightTimeMinutes { get; set; }
     }
 }
