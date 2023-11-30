@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ChampManage.API.Models
+namespace ChampManage.API.Models.ChampionshipModels
 {
-    public class ChampionshipForUpdateDto
+    public class ChampionshipForCreationDto
     {
         [Required]
         [MaxLength(100)]

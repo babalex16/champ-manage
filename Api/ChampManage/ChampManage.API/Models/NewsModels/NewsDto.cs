@@ -1,4 +1,4 @@
-﻿namespace ChampManage.API.Models
+﻿namespace ChampManage.API.Models.NewsModels
 {
     public class NewsDto
     {

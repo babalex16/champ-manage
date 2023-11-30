@@ -1,6 +1,6 @@
 ﻿using ChampManage.API.Data;
 using ChampManage.API.Entities;
-using ChampManage.API.Models;
+using ChampManage.API.Models.UserModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChampManage.API.Services

@@ -74,7 +74,7 @@ namespace ChampManage.API.Services
             }
         }
 
-        public async Task<IEnumerable<Category>> GetCategoriesForChampionshipAsync(int championshipId)
+        public async Task<IEnumerable<Category>?> GetCategoriesForChampionshipAsync(int championshipId)
         {
             var championshipWithCategories = await _context.Championships
                  .Include(c => c.ChampionshipCategories)

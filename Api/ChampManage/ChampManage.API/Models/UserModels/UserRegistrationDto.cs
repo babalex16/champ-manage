@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ChampManage.API.Models
+namespace ChampManage.API.Models.UserModels
 {
-    public class UserRegisterDto
+    public class UserRegistrationDto
     {
         [Required]
         [MaxLength(50)]

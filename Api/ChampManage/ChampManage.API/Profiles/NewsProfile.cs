@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ChampManage.API.Models;
+using ChampManage.API.Models.NewsModels;
 
 namespace ChampManage.API.Profiles
 {

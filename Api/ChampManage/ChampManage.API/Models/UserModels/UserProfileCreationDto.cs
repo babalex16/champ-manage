@@ -1,7 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ChampManage.API.Models
+namespace ChampManage.API.Models.UserModels
 {
+    /// <summary>
+    /// Data transfer object used to update data necessary for championship registration
+    /// </summary>
     public class UserProfileCreationDto
     {
         [Required(ErrorMessage = "Birthdate is required")]
@@ -20,7 +23,7 @@ namespace ChampManage.API.Models
         [Required]
         [MaxLength(100, ErrorMessage = "TeamName cannot exceed 100 characters")]
         public string? TeamName { get; set; }
-        
+
         [Phone]
         public string Phone { get; set; } = string.Empty;
     }

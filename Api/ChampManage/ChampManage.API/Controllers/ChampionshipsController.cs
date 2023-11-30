@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using ChampManage.API.Entities;
-using ChampManage.API.Models;
+using ChampManage.API.Models.CategoryModels;
+using ChampManage.API.Models.ChampionshipModels;
+using ChampManage.API.Models.MatchModels;
+using ChampManage.API.Models.UserModels;
 using ChampManage.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Net.Mime;
 
 namespace ChampManage.API.Controllers

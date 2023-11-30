@@ -1,5 +1,9 @@
-﻿namespace ChampManage.API.Models
+﻿namespace ChampManage.API.Models.MatchModels
 {
+    /// <summary>
+    /// Data Transfer Object used to display matches
+    /// </summary>
+
     public class MatchRetrievalDto
     {
         // Category

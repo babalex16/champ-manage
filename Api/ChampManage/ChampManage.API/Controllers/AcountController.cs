@@ -1,6 +1,7 @@
 ﻿using ChampManage.API.Data;
 using ChampManage.API.Entities;
-using ChampManage.API.Models;
+using ChampManage.API.Models.AuthenticationModels;
+using ChampManage.API.Models.UserModels;
 using ChampManage.API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -43,7 +44,7 @@ namespace ChampManage.API.Controllers
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<UserLogInDto>> Register (UserRegisterDto userRegisterDto)
+        public async Task<ActionResult<UserAuthResultDto>> Register (UserRegistrationDto userRegisterDto)
         {
             // Check if the email is unique
             bool isEmailUnique = await _userRepository.IsEmailUniqueAsync(userRegisterDto.Email);
@@ -69,7 +70,7 @@ namespace ChampManage.API.Controllers
             await _userRepository.CreateUserAsync(user);
             await _userRepository.SaveChangesAsync();
 
-            var userToReturn = new UserLogInDto
+            var userToReturn = new UserAuthResultDto
             {
                 Email = user.Email,
                 Token = _tokenService.CreateToken(user)
@@ -85,7 +86,7 @@ namespace ChampManage.API.Controllers
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<UserLogInDto>> Login (LoginDto loginDto)
+        public async Task<ActionResult<UserAuthResultDto>> Login (LoginCredentialsDto loginDto)
         {
             var user = await _userRepository.GetUserByEmailAsync(loginDto.Email);
 
@@ -106,7 +107,7 @@ namespace ChampManage.API.Controllers
                 }
             }
 
-            var userToReturn = new UserLogInDto
+            var userToReturn = new UserAuthResultDto
             {
                 Email = user.Email,
                 Token = _tokenService.CreateToken(user)

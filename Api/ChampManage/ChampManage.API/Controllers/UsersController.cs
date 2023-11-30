@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ChampManage.API.Entities;
-using ChampManage.API.Models;
+using ChampManage.API.Models.UserModels;
 using ChampManage.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -86,7 +86,7 @@ namespace ChampManage.API.Controllers
         }
 
         /// <summary>
-        /// Creates or updates a user's profile.
+        /// Creates or updates a user's profile, which is mandatory for championship registration.
         /// </summary>
         /// <param name="userId">The ID of the user.</param>
         /// <param name="patchDoc">The JSON patch document for updating the user's profile.</param>

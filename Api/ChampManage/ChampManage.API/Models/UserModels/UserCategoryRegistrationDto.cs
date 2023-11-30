@@ -1,7 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ChampManage.API.Models
+namespace ChampManage.API.Models.UserModels
 {
+    /// <summary>
+    /// Data transfer object for user registration to a category of championship.
+    /// </summary>
     public class UserCategoryRegistrationDto
     {
         [Required]

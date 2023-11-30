@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ChampManage.API.Models
+namespace ChampManage.API.Models.AuthenticationModels
 {
-    public class LoginDto
+    /// <summary>
+    /// Data transfer object for handling user's credentials
+    /// </summary>
+    public class LoginCredentialsDto
     {
         [Required]
         [EmailAddress]
