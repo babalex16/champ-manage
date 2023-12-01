@@ -1,0 +1,261 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ChampManage.API</name>
+    </assembly>
+    <members>
+        <member name="T:ChampManage.API.Controllers.AcountController">
+            <summary>
+            API endpoints for managing user accounts.
+            </summary>
+        </member>
+        <member name="M:ChampManage.API.Controllers.AcountController.Register(ChampManage.API.Models.UserModels.UserRegistrationDto)">
+            <summary>
+            Registers a new user account.
+            </summary>
+            <param name="userRegisterDto">The data for the new user account.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.AcountController.Login(ChampManage.API.Models.AuthenticationModels.LoginCredentialsDto)">
+            <summary>
+            Logs in a user.
+            </summary>
+            <param name="loginDto">The login credentials.</param>
+        </member>
+        <member name="T:ChampManage.API.Controllers.CategoryController">
+            <summary>
+            Endpoints for adding, removing and getting categories.
+            </summary>
+        </member>
+        <member name="M:ChampManage.API.Controllers.CategoryController.GetCategories">
+            <summary>
+            Gets a list of categories.
+            </summary>
+            <returns>An ActionResult of type IEnumerable of CategoryDto.</returns>
+        </member>
+        <member name="M:ChampManage.API.Controllers.CategoryController.GetCategoryById(System.Int32)">
+            <summary>
+            Gets a category by its ID.
+            </summary>
+            <param name="categoryId">The ID of the category.</param>
+            <returns>An ActionResult of type CategoryDto.</returns>
+        </member>
+        <member name="M:ChampManage.API.Controllers.CategoryController.CreateCategory(ChampManage.API.Models.CategoryModels.CategoryDto)">
+            <summary>
+            Creates a new category.
+            </summary>
+            <param name="categoryCreateDto">The data for the new category.</param>
+            <returns>An ActionResult of type CategoryDto.</returns>
+        </member>
+        <member name="M:ChampManage.API.Controllers.CategoryController.DeleteCategory(System.Int32)">
+            <summary>
+            Deletes a category by its ID.
+            </summary>
+            <param name="categoryId">The ID of the category to delete.</param>
+            <returns>An ActionResult.</returns>
+        </member>
+        <member name="T:ChampManage.API.Controllers.ChampionshipsController">
+            <summary>
+            API endpoints for managing championships.
+            </summary>
+        </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.GetChampionships">
+            <summary>
+            Gets a list of championships.
+            </summary>
+        </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.GetChampionship(System.Int32)">
+            <summary>
+            Gets a championship by its ID.
+            </summary>
+            <param name="championshipId">The ID of the championship.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.CreateChampionship(ChampManage.API.Models.ChampionshipModels.ChampionshipForCreationDto)">
+            <summary>
+            Creates a new championship.
+            </summary>
+            <param name="championshipForCreationDto">The data for the new championship.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.DeleteChampionship(System.Int32)">
+            <summary>
+            Deletes a championship by its id.
+            </summary>
+            <param name="championshipId">The ID of the championship to delete.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.PartiallyUpdateChampionship(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{ChampManage.API.Models.ChampionshipModels.ChampionshipForUpdateDto})">
+            <summary>
+            Partially updates a championship by its id and the provided patch document.
+            </summary>
+            <param name="championshipId">The id of the championship to update.</param>
+            <param name="patchDoc">The patch document containing the updates to the championship.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.AddCategoryToChampionship(System.Int32,System.Int32)">
+            <summary>
+            Adds a category to a championship.
+            </summary>
+            <param name="championshipId">The ID of the championship.</param>
+            <param name="categoryId">The ID of the category to add.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.RemoveCategoryFromChampionship(System.Int32,System.Int32)">
+            <summary>
+            Removes a category from a championship.
+            </summary>
+            <param name="championshipId">The ID of the championship.</param>
+            <param name="categoryId">The ID of the category to remove.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.GetCategoriesForChampionship(System.Int32)">
+            <summary>
+            Gets the categories associated with a specific championship.
+            </summary>
+            <param name="championshipId">The id of the championship to get the categories for.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.RegisterUserForCategory(System.Int32,ChampManage.API.Models.UserModels.UserCategoryRegistrationDto)">
+            <summary>
+            Registers a user for a specific category in a championship.
+            </summary>
+            <param name="championshipId">The id of the championship to register the user for a category.</param>
+            <param name="userCategoryRegistrationDto">The user and category to register.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.GetRegisteredUsersForCategory(System.Int32,System.Int32)">
+            <summary>
+            Gets the registered users for a specific category in a championship.
+            </summary>
+            <param name="championshipId">The id of the championship to get the registered users for a category.</param>
+            <param name="categoryId">The id of the category to get the registered users for.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.DeregisterUserFromCategory(System.Int32,ChampManage.API.Models.UserModels.UserCategoryRegistrationDto)">
+            <summary>
+            Removes a user from a category in a championship.
+            </summary>
+            <param name="championshipId">The id of the championship to remove the user from a category.</param>
+            <param name="userCategoryRegistrationDto">The user and category to remove.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.CreateMatchesForChampionship(System.Int32)">
+            <summary>
+            Creates matches for all categories in a championship.
+            </summary>
+            <param name="championshipId">The id of the championship to create matches for.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.GetMatchesForChampionship(System.Int32)">
+            <summary>
+            Gets all matches for a championship.
+            </summary>
+            <param name="championshipId">The id of the championship to get matches for.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.DeleteMatchesForChampionship(System.Int32)">
+            <summary>
+            Deletes all matches for a championship.
+            </summary>
+            <param name="championshipId">The id of the championship to delete matches for.</param>
+        </member>
+        <member name="T:ChampManage.API.Controllers.NewsController">
+            <summary>
+            API endpoints for managing news.
+            </summary>
+        </member>
+        <member name="M:ChampManage.API.Controllers.NewsController.GetNews">
+            <summary>
+            Gets a list of news.
+            </summary>
+        </member>
+        <member name="M:ChampManage.API.Controllers.NewsController.GetNewsById(System.Int32)">
+            <summary>
+            Gets a news item by its ID.
+            </summary>
+            <param name="newsId">The ID of the news item.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.NewsController.CreateNews(ChampManage.API.Models.NewsModels.NewsDto)">
+            <summary>
+            Creates a new news item.
+            </summary>
+            <param name="newsCreateDto">The data for the new news item.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.NewsController.DeleteNews(System.Int32)">
+            <summary>
+            Deletes a news item by its ID.
+            </summary>
+            <param name="newsId">The ID of the news item to delete.</param>
+        </member>
+        <member name="T:ChampManage.API.Controllers.UsersController">
+            <summary>
+            API endpoints for managing user accounts.
+            </summary>
+        </member>
+        <member name="M:ChampManage.API.Controllers.UsersController.GetUsers">
+            <summary>
+            Gets a list of all users.
+            </summary>  
+        </member>
+        <member name="M:ChampManage.API.Controllers.UsersController.GetUser(System.Int32)">
+            <summary>
+            Gets a user by their ID.
+            </summary>
+            <param name="userId">The ID of the user.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.UsersController.GetUserByEmail(ChampManage.API.Models.UserModels.UserEmailDto)">
+            <summary>
+            Gets a user by their email.
+            </summary>
+            <param name="userEmailDto">The email of the user.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.UsersController.CreateUserProfile(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{ChampManage.API.Models.UserModels.UserProfileCreationDto})">
+            <summary>
+            Creates or updates a user's profile, which is mandatory for championship registration.
+            </summary>
+            <param name="userId">The ID of the user.</param>
+            <param name="patchDoc">The JSON patch document for updating the user's profile.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.UsersController.DeleteUser(System.Int32)">
+            <summary>
+            Deletes a user by their ID.
+            </summary>
+            <param name="userId">The ID of the user to delete.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.UsersController.GiveOrganizerRights(System.String)">
+            <summary>
+            Gives organizer rights to a user.
+            </summary>
+            <param name="organizerEmail">The email of the user to grant organizer rights.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.UsersController.RevokeOrganizerRights(System.String)">
+            <summary>
+            Revokes organizer rights from a user.
+            </summary>
+            <param name="organizerEmail">The email of the user to revoke organizer rights.</param>
+        </member>
+        <member name="T:ChampManage.API.Models.AuthenticationModels.LoginCredentialsDto">
+            <summary>
+            Data transfer object for handling user's credentials
+            </summary>
+        </member>
+        <member name="T:ChampManage.API.Models.AuthenticationModels.UserAuthResultDto">
+            <summary>
+            Data transfer object used to provide user with a valid token after successful registration/login.
+            </summary>
+        </member>
+        <member name="T:ChampManage.API.Models.MatchModels.MatchRetrievalDto">
+            <summary>
+            Data Transfer Object used to display matches
+            </summary>
+        </member>
+        <member name="T:ChampManage.API.Models.UserModels.UserCategoryRegistrationDto">
+            <summary>
+            Data transfer object for user registration to a category of championship.
+            </summary>
+        </member>
+        <member name="T:ChampManage.API.Models.UserModels.UserEmailDto">
+            <summary>
+            Data transfer object for retrieving user by his email address.
+            </summary>
+        </member>
+        <member name="T:ChampManage.API.Models.UserModels.UserProfileCreationDto">
+            <summary>
+            Data transfer object used to update data necessary for championship registration
+            </summary>
+        </member>
+        <member name="T:ChampManage.API.Models.UserModels.UserPublicDto">
+            <summary>
+            Data transfer object having no sensitive data that could be shown in match views
+            </summary>
+        </member>
+    </members>
+</doc>

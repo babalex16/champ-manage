@@ -10,6 +10,7 @@ import RegistrationPage from './pages/RegistrationPage';
 import EventPage from './pages/EventPage';
 import TimerPage from './pages/TimerPage';
 import TestPage from './pages/TestPage';
+import NewsArticlePage from './pages/NewsArticlePage';
 import { Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -20,13 +21,14 @@ function App() {
         </header>
         <Routes>
           <Route path='/' element={<FrontPage/>} />
-          <Route path='/events' element={<EventsPage/>} />
-          <Route path='/news' element={<NewsPage/>} />
-          <Route path='/rules' element={<RulesPage/>} />
-          <Route path='/contacts' element={<ContactsPage/>} />
           <Route path='/account' element={<AccountPage/>} />
           <Route path='/register'element={<RegistrationPage/>} />
+          <Route path='/events' element={<EventsPage/>} />
           <Route path='/event' element={<EventPage/>} />
+          <Route path='/news' element={<NewsPage/>} />
+          <Route path='/article' element={<NewsArticlePage/>} />
+          <Route path='/rules' element={<RulesPage/>} />
+          <Route path='/contacts' element={<ContactsPage/>} />
           <Route path='/timer' element={<TimerPage/>} />
           <Route path='/test' element={<TestPage/>} />
         </Routes>

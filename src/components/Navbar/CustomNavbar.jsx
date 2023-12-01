@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 import { useLocation } from 'react-router-dom';
 import './CustomNavbar.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import SignInModal from '../SignInModal/SignIn';
 import facebook_icon from '../../assets/icons/icons8-facebook-50.svg'
 import whatsapp_icon from '../../assets/icons/icons8-whatsapp-50.svg'
 import youtube_icon from '../../assets/icons/icons8-youtube-50.svg'
@@ -42,6 +42,32 @@ function CustomNavbar() {
     setShowModal(false);
   }
   
+  const tryCookie = () => {
+    const jwtToken = Cookies.get('jwtToken');
+    console.log("the token is: " + jwtToken);
+    fetch(`${process.env.REACT_APP_CHAMP_MANAGE_API}/api/users/10`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        throw new Error('Network response was not ok.');
+      }
+    })
+      .then((data) => {
+        // Handle the data from the API here
+        console.log(data);
+      })
+      .catch((error) => {
+        // Handle errors here
+        console.error(error);
+      });
+  }
+
   return (
     <Navbar
       fixed="top"
@@ -52,7 +78,7 @@ function CustomNavbar() {
       } ${scrolled ? 'navbar-scrolled' : ''}`}
     >
       <Container>
-        <Navbar.Brand href="/">
+        <Navbar.Brand href="" onClick={tryCookie}>
             <img
               src={mjjf_logo_short}
               width="136"
@@ -80,24 +106,7 @@ function CustomNavbar() {
         show={showModal} 
         onHide={handleCloseModal} 
       >
-      <Modal.Header >
-        <Modal.Title className="w-100 text-center text-white">Sign In</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className='d-flex align-items-center justify-content-center flex-column'>  
-        <Form className='align-items-center my-3'>
-          <Form.Control type="email" id="email" placeholder="Email" className='form-entry mb-3'/>
-          <Form.Control type="password" id="password" placeholder="Password" className='form-entry mb-3'/>
-          <Button variant="primary" type="submit" className='form-entry mt-3'>
-            Sign In
-          </Button>
-        </Form>
-        <div className='text-center'>
-        <a href="#" className="text-decoration-none text-underline">Forgot your password?</a>
-        </div>
-        <div className='text-center mt-3 mb-1'>
-          <a href="/register" className="text-decoration-none text-underline">Create an account</a>
-        </div>
-        </Modal.Body> 
+        <SignInModal/>
       </Modal>
     </Navbar>
   )

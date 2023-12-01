@@ -1,0 +1,30 @@
+.news-article-container {
+  text-align: center;
+  width: 65%;
+  margin: 0 auto;
+}
+
+.article-image {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.article-title,
+.article-date,
+.article-content {
+  text-align: left;
+  margin: 0;
+  padding: 10px;
+}
+
+.article-title {
+}
+
+.article-date {
+  font-weight: bold;
+}
+
+.article-content {
+  margin: 0 auto;
+}

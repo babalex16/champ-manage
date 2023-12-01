@@ -22,3 +22,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .env
+
+# Ignore sensitive configuration files
+appsettings.Development.json
+*.db
+Api/ChampManage/ChampManage.API/ChampManage.db-shm
+Api/ChampManage/ChampManage.API/ChampManage.db-wal
+Api/ChampManage/ChampManage.API/ChampManage.db
