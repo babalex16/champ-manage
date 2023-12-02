@@ -97,12 +97,18 @@ namespace ChampManage.API.Services
             return await _context.ChampionshipCategories
                 .AnyAsync(cc => cc.ChampionshipId == championshipId && cc.CategoryId == categoryId);
         }
-
-        //Marks the championship entity as modified, which signals to Entity
-        //Framework that it should update the entity in the database the next time SaveChanges is called.
-        public void UpdateChampionship(Championship championship)
+        public BracketNode? GetMatchById(int matchId)
         {
-            _context.Entry(championship).State = EntityState.Modified;
+            return _context.Matches
+                .Include(m => m.Participant1)
+                .Include(m => m.Participant2)
+                .SingleOrDefault(m => m.Id == matchId);
+        }
+        public BracketNode? FindParentBracketNode(int matchId)
+        {
+            return _context.Matches
+                .Where(node => node.LeftChildId == matchId || node.RightChildId == matchId)
+                .FirstOrDefault();
         }
 
         public async Task<bool> SaveChangesAsync()

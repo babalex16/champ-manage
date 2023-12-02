@@ -147,6 +147,20 @@
             </summary>
             <param name="championshipId">The id of the championship to delete matches for.</param>
         </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.GetUpcomingMatchesForChampionship(System.Int32)">
+            <summary>
+            Gets upcoming matches for a championship.
+            </summary>
+            <param name="championshipId">The id of the championship to get upcoming matches for.</param>
+        </member>
+        <member name="M:ChampManage.API.Controllers.ChampionshipsController.SetWinnerForMatch(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Updates matches by setting winner and moving him to the next Round (unless already in finals )
+            </summary>
+            <param name="matchId"></param>
+            <param name="championshipId"></param>
+            <param name="isParticipant1Winner"></param>
+        </member>
         <member name="T:ChampManage.API.Controllers.NewsController">
             <summary>
             API endpoints for managing news.

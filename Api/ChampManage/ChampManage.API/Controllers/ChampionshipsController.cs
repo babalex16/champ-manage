@@ -27,16 +27,16 @@ namespace ChampManage.API.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public ChampionshipsController( IChampionshipRepository championshipRepository,
-                                        ICategoryRepository categoryRepository, 
+        public ChampionshipsController(IChampionshipRepository championshipRepository,
+                                        ICategoryRepository categoryRepository,
                                         IUserRepository userRepository,
                                         IMapper mapper)
         {
             _championshipRepository = championshipRepository ??
                 throw new ArgumentNullException(nameof(championshipRepository));
-            _categoryRepository = categoryRepository ?? 
+            _categoryRepository = categoryRepository ??
                 throw new ArgumentNullException(nameof(categoryRepository));
-            _userRepository = userRepository ?? 
+            _userRepository = userRepository ??
                 throw new ArgumentNullException(nameof(userRepository));
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
@@ -102,7 +102,7 @@ namespace ChampManage.API.Controllers
 
             return CreatedAtRoute("GetChampionship",
                 new {
-                    championshipId = createdChampionshipDtoToReturn.Id 
+                    championshipId = createdChampionshipDtoToReturn.Id
                 },
                 createdChampionshipDtoToReturn);
         }
@@ -186,13 +186,13 @@ namespace ChampManage.API.Controllers
         public async Task<IActionResult> AddCategoryToChampionship(int championshipId, int categoryId)
         {
             var category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
-            if (category == null )
+            if (category == null)
             {
                 return NotFound("Category not found.");
             }
 
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
-            if (championship == null )
+            if (championship == null)
             {
                 return NotFound("Championship not found.");
             }
@@ -205,8 +205,8 @@ namespace ChampManage.API.Controllers
             _championshipRepository.AddCategoryToChampionship(championshipId, categoryId);
             await _championshipRepository.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(AddCategoryToChampionship), 
-                new { championshipId, categoryId }, 
+            return CreatedAtAction(nameof(AddCategoryToChampionship),
+                new { championshipId, categoryId },
                 "Category added to championship successfully.");
         }
 
@@ -235,7 +235,7 @@ namespace ChampManage.API.Controllers
             var championshipCategory = championship.ChampionshipCategories
                 .FirstOrDefault(cc => cc.CategoryId == categoryId);
 
-            if (! await _championshipRepository.CategoryExistsInChampionshipAsync(championshipId, categoryId))
+            if (!await _championshipRepository.CategoryExistsInChampionshipAsync(championshipId, categoryId))
             {
                 return NotFound("Category does not exist for the specified Championship.");
             }
@@ -359,7 +359,7 @@ namespace ChampManage.API.Controllers
 
             var userCategoryRegistrations = await _userRepository.GetRegisteredUsersForCategory(championshipId, categoryId);
 
-            var registeredUsers = new List<UserPublicDto>(); 
+            var registeredUsers = new List<UserPublicDto>();
             foreach (var userCategoryRegistration in userCategoryRegistrations)
             {
                 var user = await _userRepository.GetUserByIdAsync(userCategoryRegistration.Id);
@@ -382,7 +382,7 @@ namespace ChampManage.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeregisterUserFromCategory(
-                int championshipId, 
+                int championshipId,
                 [FromBody] UserCategoryRegistrationDto userCategoryRegistrationDto)
         {
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
@@ -415,7 +415,7 @@ namespace ChampManage.API.Controllers
 
             await _userRepository.SaveChangesAsync();
 
-            return NoContent(); 
+            return NoContent();
         }
 
         /// <summary>
@@ -465,6 +465,7 @@ namespace ChampManage.API.Controllers
             var matches = _categoryRepository.GetMatchesForChampionship(championshipId)
                 .Select(match => new MatchRetrievalDto
                 {
+                    Id = match.Id,
                     // Category
                     Round = match.Round,
                     CategoryName = _categoryRepository.GetCategoryNameByChampionshipCategoryId(match.ChampionshipCategoryId),
@@ -476,16 +477,13 @@ namespace ChampManage.API.Controllers
                     // Participant1
                     Participant1FullName = GetFullName(match.Participant1),
                     Participant1TeamName = match.Participant1?.TeamName ?? string.Empty,
-                    Participant1Age = CalculateAge(match.Participant1?.Birthdate),
 
                     // Participant2
                     Participant2FullName = GetFullName(match.Participant2),
                     Participant2TeamName = match.Participant2?.TeamName ?? string.Empty,
-                    Participant2Age = CalculateAge(match.Participant2?.Birthdate),
 
                     // Winner
                     IsParticipant1Winner = match.IsParticipant1Winner,
-
                 });
 
             return Ok(matches);
@@ -514,10 +512,93 @@ namespace ChampManage.API.Controllers
             return NoContent();
         }
 
-        //[HttpGet("{championshipId}/getUpcommingFights")]
-        //public async Task<IActionResult> GetUpcommingMatchesForChampionship()
-        //{
-        //}
+        /// <summary>
+        /// Gets upcoming matches for a championship.
+        /// </summary>
+        /// <param name="championshipId">The id of the championship to get upcoming matches for.</param>
+        [HttpGet("{championshipId}/upcomingMatches")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetUpcomingMatchesForChampionship(int championshipId)
+        {
+            var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
+            if (championship == null)
+            {
+                return NotFound($"Championship with ID {championshipId} not found.");
+            }
+
+            var upcomingMatches = _categoryRepository.GetMatchesForChampionship(championshipId)
+                .Where(match => match.IsParticipant1Winner == null)
+                .Select(match => new MatchRetrievalDto
+                {
+                    Id = match.Id,
+                    // Category
+                    Round = match.Round,
+                    CategoryName = _categoryRepository.GetCategoryNameByChampionshipCategoryId(match.ChampionshipCategoryId),
+                    Belt = _categoryRepository.GetCategoryBeltByChampionshipCategoryId(match.ChampionshipCategoryId),
+                    MaxWeight = _categoryRepository.GetCategoryMaxWeightByChampionshipCategoryId(match.ChampionshipCategoryId),
+                    FightTimeMinutes = _categoryRepository.GetCategoryFightTimeByChampionshipCategoryId(match.ChampionshipCategoryId),
+                    Order = match.Order,
+
+                    // Participant1
+                    Participant1FullName = GetFullName(match.Participant1),
+                    Participant1TeamName = match.Participant1?.TeamName ?? string.Empty,
+
+                    // Participant2
+                    Participant2FullName = GetFullName(match.Participant2),
+                    Participant2TeamName = match.Participant2?.TeamName ?? string.Empty,
+
+                    // Winner
+                    IsParticipant1Winner = match.IsParticipant1Winner,
+                });
+
+            return Ok(upcomingMatches);
+        }
+       
+        /// <summary>
+        /// Updates matches by setting winner and moving him to the next Round (unless already in finals )
+        /// </summary>
+        /// <param name="matchId"></param>
+        /// <param name="championshipId"></param>
+        /// <param name="isParticipant1Winner"></param>
+        [HttpPatch("{championshipId}/match/{matchId}/setWinnerRed/{isParticipant1Winner}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> SetWinnerForMatch(int matchId, int championshipId, bool isParticipant1Winner)
+        {
+            var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
+            if (championship == null)
+            {
+                return NotFound($"Championship with ID {championshipId} not found.");
+            }
+
+            var currentMatch = _championshipRepository.GetMatchById(matchId);
+            if (currentMatch == null)
+            {
+                return NotFound($"Match with ID {matchId} not found.");
+            }
+
+            currentMatch.IsParticipant1Winner = isParticipant1Winner;
+
+            // Move the winner to the next Round, unless final round
+            var parentBracketNode = _championshipRepository.FindParentBracketNode(matchId);
+
+            if (parentBracketNode != null)
+            {
+                if (parentBracketNode.LeftChildId == matchId)
+                {
+                    parentBracketNode.Participant1Id = isParticipant1Winner ? currentMatch.Participant1Id : currentMatch.Participant2Id;
+                }
+                else if (parentBracketNode.RightChildId == matchId)
+                {
+                    parentBracketNode.Participant2Id = isParticipant1Winner ? currentMatch.Participant1Id : currentMatch.Participant2Id;
+                }
+            }
+
+            await _categoryRepository.SaveChangesAsync();
+
+            return NoContent();
+        }
 
         // Helper method to calculate age  based on the provided birthdate.
         private static int? CalculateAge(DateTime? birthdate)

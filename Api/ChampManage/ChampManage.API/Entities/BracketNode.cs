@@ -29,8 +29,5 @@ namespace ChampManage.API.Entities
         public int? LeftChildId { get; set; }
         public BracketNode? RightChild { get; set; }
         public int? RightChildId { get; set; }
-
     }
-
-
 }

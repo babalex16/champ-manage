@@ -15,7 +15,8 @@ namespace ChampManage.API.Services
         void RemoveCategoryFromChampionship(int championshipId, int categoryId);
         Task<IEnumerable<Category>> GetCategoriesForChampionshipAsync(int championshipId);
         Task<bool> CategoryExistsInChampionshipAsync(int championshipId, int categoryId);
-        void UpdateChampionship(Championship championship);
+        BracketNode? GetMatchById(int matchId);
+        BracketNode? FindParentBracketNode(int matchId);
         Task<bool> SaveChangesAsync();
     }
 }
