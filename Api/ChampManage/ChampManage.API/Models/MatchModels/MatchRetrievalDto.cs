@@ -8,6 +8,10 @@
     {
         // Category
         public string CategoryName { get; set; } = string.Empty;
+        public string Belt { get; set; }
+        public int MaxWeight { get; set; }
+        public int FightTimeMinutes { get; set; }
+        public int Round {  get; set; }
         public int Order { get; set; }
 
         // Participants

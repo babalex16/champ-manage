@@ -7,6 +7,8 @@ namespace ChampManage.API.Services
     public class CategoryRepository : ICategoryRepository
     {
         private readonly ChampManageContext _context;
+        private const int firstRound = 1;
+        private const int secondRound = 2;
 
         public CategoryRepository(ChampManageContext context)
         {
@@ -22,12 +24,6 @@ namespace ChampManage.API.Services
         {
             return await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
         }
-
-        /*
-        public async Task<IEnumerable<Category>> GetCategoriesByIdsAsync(IEnumerable<int> categoryIds)
-        {
-            return await _context.Categories.Where(c => categoryIds.Contains(c.Id)).ToListAsync();
-        }*/
 
         public void AddCategory(Category category)
         {
@@ -88,6 +84,7 @@ namespace ChampManage.API.Services
             {
                 var byeNode = new BracketNode
                 {
+                    Round = firstRound,
                     Order = orderCounter++,
                     Participant1Id = participants[i],
                     ChampionshipCategoryId = championshipCategory.Id,
@@ -101,6 +98,7 @@ namespace ChampManage.API.Services
             {
                 var newNode = new BracketNode
                 {
+                    Round = firstRound,
                     Order = orderCounter++,
                     ChampionshipCategoryId = championshipCategory.Id,
                     Participant1Id = participants[i],
@@ -113,7 +111,7 @@ namespace ChampManage.API.Services
             //no need to run recursive algorithm if the is only 1 match between 2 people for example
             if (allBracketNodes.Count > 1)
             {
-                allBracketNodes.AddRange(BuildNextLayerFromLeaves(championshipCategory, leavesBracketNodes));
+                allBracketNodes.AddRange(BuildNextLayerFromLeaves(championshipCategory, leavesBracketNodes, secondRound));
             }
 
             // Sort the list by the Order property
@@ -122,7 +120,7 @@ namespace ChampManage.API.Services
             return allBracketNodes;
         }
 
-        private List<BracketNode> BuildNextLayerFromLeaves(ChampionshipCategory championshipCategory, List<BracketNode> currentNodes)
+        private List<BracketNode> BuildNextLayerFromLeaves(ChampionshipCategory championshipCategory, List<BracketNode> currentNodes, int round)
         {
             int matchOrder = currentNodes.Last().Order;  // Get the order of the last element in the received set
             int nextMatchOrder = matchOrder + 1;  // Initialize the order for the next set of matches
@@ -135,6 +133,7 @@ namespace ChampManage.API.Services
             {
                 var newMatch = new BracketNode
                 {
+                    Round = round,
                     Order = nextMatchOrder++,
                     ChampionshipCategoryId = championshipCategory.Id,
                     LeftChild = currentNodes[i],
@@ -147,7 +146,7 @@ namespace ChampManage.API.Services
             // Check if there are more than one node in the nextLayerNodes list
             if (nextLayerNodes.Count > 1)
             {
-                var recursivelyBuiltNodes = BuildNextLayerFromLeaves(championshipCategory, nextLayerNodes);
+                var recursivelyBuiltNodes = BuildNextLayerFromLeaves(championshipCategory, nextLayerNodes, round+1);
                 allNodes.AddRange(recursivelyBuiltNodes);  // Add nodes from the recursive call to the accumulator
             }
 
@@ -202,6 +201,37 @@ namespace ChampManage.API.Services
                 .FirstOrDefault();
 
             return categoryName ?? string.Empty;
+        }
+
+        public string GetCategoryBeltByChampionshipCategoryId(int championshipCategoryId)
+        {
+            var belt = _context.ChampionshipCategories
+                .Where(cc => cc.Id == championshipCategoryId)
+                .Select(cc => cc.Category.Belt)
+                .FirstOrDefault();
+            var result = belt.ToString();
+
+            return result ?? string.Empty;
+        }
+
+        public int GetCategoryFightTimeByChampionshipCategoryId(int championshipCategoryId)
+        {
+            var fightTime = _context.ChampionshipCategories
+                .Where(cc => cc.Id == championshipCategoryId)
+                .Select(cc => cc.Category.FightTimeMinutes)
+                .FirstOrDefault();
+
+            return fightTime;
+        }
+
+        public int GetCategoryMaxWeightByChampionshipCategoryId(int championshipCategoryId)
+        {
+            var maxWeight = _context.ChampionshipCategories
+                .Where(cc => cc.Id == championshipCategoryId)
+                .Select(cc => cc.Category.MaxWeight)
+                .FirstOrDefault();
+
+            return maxWeight;
         }
 
         public async Task<bool> SaveChangesAsync()

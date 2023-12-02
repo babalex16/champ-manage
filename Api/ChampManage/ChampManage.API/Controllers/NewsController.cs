@@ -68,7 +68,7 @@ namespace ChampManage.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<NewsDto>> CreateNews(NewsDto newsCreateDto)
+        public async Task<IActionResult> CreateNews(NewsDto newsCreateDto)
         {
             if (newsCreateDto == null)
             {
@@ -97,7 +97,7 @@ namespace ChampManage.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> DeleteNews(int newsId)
+        public async Task<IActionResult> DeleteNews(int newsId)
         {
             var news = await _newsRepository.GetNewsByIdAsync(newsId);
 

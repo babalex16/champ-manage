@@ -10,6 +10,7 @@ namespace ChampManage.API.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        public int Round { get; set; }
         public int Order {  get; set; }
 
         [ForeignKey("Participant1Id")]

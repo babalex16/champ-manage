@@ -6,13 +6,15 @@ namespace ChampManage.API.Services
     {
         Task<IEnumerable<Category>> GetCategoriesAsync();
         Task<Category?> GetCategoryByIdAsync(int categoryId);
-        //Task<IEnumerable<Category>> GetCategoriesByIdsAsync(IEnumerable<int> categoryIds);
         void AddCategory(Category category);
         void DeleteCategory(Category category);
         void CreateMatchesForChampionship(int championshipId);
         List<BracketNode> GetMatchesForChampionship(int championshipId);
         void DeleteMatchesForChampionship(int championshipId);
         string GetCategoryNameByChampionshipCategoryId(int championshipCategoryId);
+        public int GetCategoryFightTimeByChampionshipCategoryId(int championshipCategoryId);
+        public int GetCategoryMaxWeightByChampionshipCategoryId(int championshipCategoryId);
+        public string GetCategoryBeltByChampionshipCategoryId(int championshipCategoryId);
         Task<bool> SaveChangesAsync();
     }
 }

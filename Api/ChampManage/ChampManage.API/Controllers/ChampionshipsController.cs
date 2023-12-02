@@ -48,7 +48,7 @@ namespace ChampManage.API.Controllers
         [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<ChampionshipDto>> GetChampionships()
+        public async Task<ActionResult<IEnumerable<ChampionshipDto>>> GetChampionships()
         {
             var championships = await _championshipRepository.GetChampionshipsAsync();
             var result = _mapper.Map<IEnumerable<ChampionshipDto>>(championships);
@@ -253,7 +253,7 @@ namespace ChampManage.API.Controllers
         [HttpGet("{championshipId}/getCategories", Name = "GetCategoriesForChampionship")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetCategoriesForChampionship(int championshipId)
+        public async Task<ActionResult<CategoryDto>> GetCategoriesForChampionship(int championshipId)
         {
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
             if (championship == null)
@@ -466,7 +466,11 @@ namespace ChampManage.API.Controllers
                 .Select(match => new MatchRetrievalDto
                 {
                     // Category
+                    Round = match.Round,
                     CategoryName = _categoryRepository.GetCategoryNameByChampionshipCategoryId(match.ChampionshipCategoryId),
+                    Belt = _categoryRepository.GetCategoryBeltByChampionshipCategoryId(match.ChampionshipCategoryId),
+                    MaxWeight = _categoryRepository.GetCategoryMaxWeightByChampionshipCategoryId(match.ChampionshipCategoryId),
+                    FightTimeMinutes = _categoryRepository.GetCategoryFightTimeByChampionshipCategoryId(match.ChampionshipCategoryId),
                     Order = match.Order,
 
                     // Participant1
@@ -510,6 +514,10 @@ namespace ChampManage.API.Controllers
             return NoContent();
         }
 
+        //[HttpGet("{championshipId}/getUpcommingFights")]
+        //public async Task<IActionResult> GetUpcommingMatchesForChampionship()
+        //{
+        //}
 
         // Helper method to calculate age  based on the provided birthdate.
         private static int? CalculateAge(DateTime? birthdate)
