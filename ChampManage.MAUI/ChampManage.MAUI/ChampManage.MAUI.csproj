@@ -49,6 +49,28 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\NewsImages\image1.JPG" />
+	  <None Remove="Resources\Images\NewsImages\image2.JPG" />
+	  <None Remove="Resources\Images\NewsImages\image3.JPG" />
+	  <None Remove="Resources\Images\NewsImages\image4.JPG" />
+	  <None Remove="Resources\Images\NewsImages\image5.JPG" />
+	  <None Remove="Resources\Images\NewsImages\image6.JPG" />
+	  <None Remove="Resources\Images\NewsImages\image7.JPG" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\Images\NewsImages\image1.JPG" />
+	  <MauiImage Include="Resources\Images\NewsImages\image2.JPG" />
+	  <MauiImage Include="Resources\Images\NewsImages\image3.JPG" />
+	  <MauiImage Include="Resources\Images\NewsImages\image4.JPG" />
+	  <MauiImage Include="Resources\Images\NewsImages\image5.JPG" />
+	  <MauiImage Include="Resources\Images\NewsImages\image6.JPG" />
+	  <MauiImage Include="Resources\Images\NewsImages\image7.JPG" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 	</ItemGroup>
 

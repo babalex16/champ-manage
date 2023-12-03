@@ -12,6 +12,7 @@ namespace ChampManage.API.Profiles
             CreateMap<ChampionshipForCreationDto, Championship>();
             CreateMap<ChampionshipForUpdateDto, Championship>();
             CreateMap<Championship, ChampionshipForUpdateDto>();
+            CreateMap<Championship, ChampionshipForRetrievalDto>();
         }
     }
 }

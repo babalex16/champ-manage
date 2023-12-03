@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    x:Class="ChampManage.MAUI.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:ChampManage.MAUI.Models"
+    xmlns:viewmodel="clr-namespace:ChampManage.MAUI.ViewModels"
+    x:DataType="viewmodel:MainPageViewModel"
+    BackgroundColor="{DynamicResource PageBackgroundColor}">
+
+    <CollectionView
+            Grid.ColumnSpan="2"
+            ItemsSource="{Binding NewsList}"
+            SelectionMode="None">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:News">
+                    <Grid Padding="10">
+                        <Frame HeightRequest="125" Style="{StaticResource CardView}">
+                            <Grid Padding="0" ColumnDefinitions="125,*">
+                                <VerticalStackLayout
+                                    VerticalOptions="Center"
+                                    Grid.Column="1"
+                                    Padding="10">
+                                    <Label Style="{StaticResource LargeLabel}" Text="{Binding Title}" />
+                                    <Label Style="{StaticResource MediumLabel}" Text="{Binding DateOfArticle, StringFormat='{0:d}'}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+</ContentPage>

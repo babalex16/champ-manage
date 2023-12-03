@@ -48,10 +48,10 @@ namespace ChampManage.API.Controllers
         [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<ChampionshipDto>>> GetChampionships()
+        public async Task<ActionResult<IEnumerable<ChampionshipForRetrievalDto>>> GetChampionships()
         {
             var championships = await _championshipRepository.GetChampionshipsAsync();
-            var result = _mapper.Map<IEnumerable<ChampionshipDto>>(championships);
+            var result = _mapper.Map<IEnumerable<ChampionshipForRetrievalDto>>(championships);
             return Ok(result);
         }
 
@@ -63,7 +63,7 @@ namespace ChampManage.API.Controllers
         [HttpGet("{championshipId}", Name = "GetChampionship")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ChampionshipDto>> GetChampionship(int championshipId)
+        public async Task<ActionResult<ChampionshipForRetrievalDto>> GetChampionship(int championshipId)
         {
             var championship = await _championshipRepository.GetChampionshipByIdAsync(championshipId);
 
@@ -72,7 +72,7 @@ namespace ChampManage.API.Controllers
                 return NotFound();
             }
 
-            var championshipDto = _mapper.Map<ChampionshipDto>(championship);
+            var championshipDto = _mapper.Map<ChampionshipForRetrievalDto>(championship);
             return Ok(championshipDto);
         }
 
