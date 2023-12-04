@@ -13,13 +13,7 @@ namespace ChampManage.MAUI.Models
         public DateTime DateOfArticle { get; set; }
         public string Text { get; set; }
 
-        public string Image => $"Resources/Images/NewsImages/{GetRandomImageName()}";
+        public string ImagePath { get; set; } = string.Empty;
 
-        private string GetRandomImageName()
-        {
-            var imageNames = new List<string> { "image1.JPG", "image2.JPG", "image3.JPG", "image4.JPG", "image5.JPG", "image6.JPG", "image7.JPG" };
-            var random = new Random();
-            return imageNames[random.Next(imageNames.Count)];
-        }
     }
 }

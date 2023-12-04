@@ -34,6 +34,7 @@ namespace ChampManage.MAUI.ViewModels
 
                 foreach (var item in news)
                 {
+                    item.ImagePath = $"Resources/Images/{GetRandomImageName()}";
                     NewsList.Add(item);
                 }
             }
@@ -45,6 +46,13 @@ namespace ChampManage.MAUI.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        private string GetRandomImageName()
+        {
+            var imageNames = new List<string> { "image1.JPG", "image2.JPG", "image3.JPG", "image4.JPG", "image5.JPG", "image6.JPG", "image7.JPG" };
+            var random = new Random();
+            return imageNames[random.Next(imageNames.Count)];
         }
     }
 }

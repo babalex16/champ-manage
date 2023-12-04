@@ -11,8 +11,12 @@ namespace ChampManage.MAUI
             InitializeComponent();
             _viewModel = viewModel;
             BindingContext = _viewModel;
+        }
 
-            this.Appearing += async (sender, e) => await _viewModel.GetNewsAsync();
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await _viewModel.GetNewsAsync();
         }
     }
 

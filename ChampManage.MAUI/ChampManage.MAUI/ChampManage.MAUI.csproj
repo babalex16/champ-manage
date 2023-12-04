@@ -49,23 +49,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Images\NewsImages\image1.JPG" />
-	  <None Remove="Resources\Images\NewsImages\image2.JPG" />
-	  <None Remove="Resources\Images\NewsImages\image3.JPG" />
-	  <None Remove="Resources\Images\NewsImages\image4.JPG" />
-	  <None Remove="Resources\Images\NewsImages\image5.JPG" />
-	  <None Remove="Resources\Images\NewsImages\image6.JPG" />
-	  <None Remove="Resources\Images\NewsImages\image7.JPG" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <MauiImage Include="Resources\Images\NewsImages\image1.JPG" />
-	  <MauiImage Include="Resources\Images\NewsImages\image2.JPG" />
-	  <MauiImage Include="Resources\Images\NewsImages\image3.JPG" />
-	  <MauiImage Include="Resources\Images\NewsImages\image4.JPG" />
-	  <MauiImage Include="Resources\Images\NewsImages\image5.JPG" />
-	  <MauiImage Include="Resources\Images\NewsImages\image6.JPG" />
-	  <MauiImage Include="Resources\Images\NewsImages\image7.JPG" />
+	  <None Remove="Resources\Images\image1.JPG" />
+	  <None Remove="Resources\Images\image2.JPG" />
+	  <None Remove="Resources\Images\image3.JPG" />
+	  <None Remove="Resources\Images\image4.jpg" />
+	  <None Remove="Resources\Images\image5.jpg" />
+	  <None Remove="Resources\Images\image6.jpg" />
+	  <None Remove="Resources\Images\image7.jpg" />
 	</ItemGroup>
 
 	<ItemGroup>
