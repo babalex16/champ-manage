@@ -1,5 +1,6 @@
 ﻿using ChampManage.MAUI.Services;
 using ChampManage.MAUI.ViewModels;
+using ChampManage.MAUI.Views;
 using Microsoft.Extensions.Logging;
 
 namespace ChampManage.MAUI
@@ -18,7 +19,9 @@ namespace ChampManage.MAUI
                 });
             builder.Services.AddSingleton<NewsService>();
             builder.Services.AddSingleton<MainPageViewModel>();
+            builder.Services.AddTransient<NewsDetailsViewModel>();
             builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddTransient<NewsDetailsPage>();
 
 #if DEBUG
 		builder.Logging.AddDebug();

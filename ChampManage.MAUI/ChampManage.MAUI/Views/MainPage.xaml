@@ -7,7 +7,8 @@
     xmlns:model="clr-namespace:ChampManage.MAUI.Models"
     xmlns:viewmodel="clr-namespace:ChampManage.MAUI.ViewModels"
     x:DataType="viewmodel:MainPageViewModel"
-    BackgroundColor="{DynamicResource PageBackgroundColor}">
+    BackgroundColor="LightGray"
+    Title="{Binding Title}">
 
     <CollectionView
             Grid.ColumnSpan="2"
@@ -18,20 +19,25 @@
                 <DataTemplate x:DataType="model:News">
                     <Grid Padding="10">
                         <Frame HeightRequest="125" Style="{StaticResource CardView}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}}, Path=GoToNewsDetailsCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            </Frame.GestureRecognizers>
                             <Grid Padding="0" ColumnDefinitions="125,*">
-                            <Image>
-                                <Image.Source>
-                                    <FileImageSource BindingContext="{x:Reference ContentPage}" File="{Binding ImagePath}" />
-                                </Image.Source>
-                                <Image.WidthRequest>150</Image.WidthRequest>
-                                <Image.HeightRequest>150</Image.HeightRequest>
-                            </Image>
-                            <VerticalStackLayout
-                                    VerticalOptions="Center"
-                                    Grid.Column="1"
-                                    Padding="10">
+                            <Image Margin="0,0,20,0" Grid.Column="0">
+                                    <Image.Source>
+                                        <FileImageSource File="Resources/image6.jpg" />
+                                    </Image.Source>
+                                    <Image.WidthRequest>150</Image.WidthRequest>
+                                <Image.HeightRequest>120</Image.HeightRequest>
+                                </Image>
+                                <VerticalStackLayout
+                                            VerticalOptions="Center"
+                                            Grid.Column="1"
+                                            Padding="10">
                                     <Label Style="{StaticResource LargeLabel}" Text="{Binding Title}" />
-                                    <Label Style="{StaticResource MediumLabel}" Text="{Binding DateOfArticle, StringFormat='{0:d}'}" />
+                                <Label Style="{StaticResource MediumLabel}" Text="{Binding DateOfArticle, StringFormat='{0:d}'}" Margin="0,10,0,0" FontAttributes="Italic" />
                                 </VerticalStackLayout>
                             </Grid>
                         </Frame>

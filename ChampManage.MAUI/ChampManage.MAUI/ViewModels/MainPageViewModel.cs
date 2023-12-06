@@ -2,15 +2,17 @@
 using ChampManage.MAUI.Services;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
+using ChampManage.MAUI.Views;
 
 namespace ChampManage.MAUI.ViewModels
 {
     public partial class MainPageViewModel : BaseViewModel
     {
         public ObservableCollection<News> NewsList { get; } = new();
-        NewsService _newsService;
+        private readonly NewsService _newsService;
         public MainPageViewModel(NewsService newsService)
         {
+            Title = "News";
             _newsService = newsService;
         }
 
@@ -34,7 +36,6 @@ namespace ChampManage.MAUI.ViewModels
 
                 foreach (var item in news)
                 {
-                    item.ImagePath = $"Resources/Images/{GetRandomImageName()}";
                     NewsList.Add(item);
                 }
             }
@@ -48,11 +49,18 @@ namespace ChampManage.MAUI.ViewModels
             }
         }
 
-        private string GetRandomImageName()
+        [RelayCommand]
+        async Task GoToNewsDetailsAsync(News news)
         {
-            var imageNames = new List<string> { "image1.JPG", "image2.JPG", "image3.JPG", "image4.JPG", "image5.JPG", "image6.JPG", "image7.JPG" };
-            var random = new Random();
-            return imageNames[random.Next(imageNames.Count)];
+            if ( news is null ) 
+            {
+                return;
+            }
+            await Shell.Current.GoToAsync($"{nameof(NewsDetailsPage)}", true ,
+                new Dictionary<string, object>
+                {
+                    {"News", news }
+                });
         }
     }
 }
