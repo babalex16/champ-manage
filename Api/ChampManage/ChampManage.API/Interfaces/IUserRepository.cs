@@ -1,7 +1,7 @@
 ﻿using ChampManage.API.Entities;
 using ChampManage.API.Models.UserModels;
 
-namespace ChampManage.API.Services
+namespace ChampManage.API.Interfaces
 {
     public interface IUserRepository
     {

@@ -1,10 +1,7 @@
-﻿using ChampManage.API.Data;
-using ChampManage.API.Entities;
+﻿using ChampManage.API.Entities;
+using ChampManage.API.Interfaces;
 using ChampManage.API.Models.AuthenticationModels;
 using ChampManage.API.Models.UserModels;
-using ChampManage.API.Services;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 using System.Security.Cryptography;

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ChampManage.API.Entities;
+using ChampManage.API.Interfaces;
 using ChampManage.API.Models.NewsModels;
-using ChampManage.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

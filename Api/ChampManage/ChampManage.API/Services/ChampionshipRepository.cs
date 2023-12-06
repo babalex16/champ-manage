@@ -1,5 +1,6 @@
 ﻿using ChampManage.API.Data;
 using ChampManage.API.Entities;
+using ChampManage.API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 

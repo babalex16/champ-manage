@@ -1,5 +1,6 @@
 using ChampManage.API;
 using ChampManage.API.Data;
+using ChampManage.API.Interfaces;
 using ChampManage.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

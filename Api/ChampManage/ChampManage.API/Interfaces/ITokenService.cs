@@ -1,6 +1,6 @@
 ﻿using ChampManage.API.Entities;
 
-namespace ChampManage.API.Services
+namespace ChampManage.API.Interfaces
 {
     public interface ITokenService
     {
