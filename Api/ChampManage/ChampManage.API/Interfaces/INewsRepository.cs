@@ -9,6 +9,5 @@ namespace ChampManage.API.Interfaces
         void AddNews(News news);
         void DeleteNews(News news);
         Task<bool> SaveChangesAsync();
-
     }
 }

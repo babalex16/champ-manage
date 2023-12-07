@@ -13,7 +13,7 @@ namespace ChampManage.API.Services
 
         public TokenService(IConfiguration configuration)
         {
-           
+
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
         }
 

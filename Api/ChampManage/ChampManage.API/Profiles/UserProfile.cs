@@ -8,10 +8,10 @@ namespace ChampManage.API.Profiles
     {
         public UserProfile()
         {
-            CreateMap<Entities.User, UserDto>();
-            CreateMap<UserProfileCreationDto, Entities.User>();
-            CreateMap<Entities.User, UserProfileCreationDto>();
-            CreateMap<Entities.User, UserPublicDto>();
+            CreateMap<User, UserDto>();
+            CreateMap<UserProfileCreationDto, User>();
+            CreateMap<User, UserProfileCreationDto>();
+            CreateMap<User, UserPublicDto>();
         }
     }
 }

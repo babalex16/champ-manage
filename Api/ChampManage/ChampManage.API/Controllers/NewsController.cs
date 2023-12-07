@@ -3,7 +3,6 @@ using ChampManage.API.Entities;
 using ChampManage.API.Interfaces;
 using ChampManage.API.Models.NewsModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 
@@ -67,7 +66,6 @@ namespace ChampManage.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateNews(NewsDto newsCreateDto)
         {
             if (newsCreateDto == null)
@@ -79,10 +77,7 @@ namespace ChampManage.API.Controllers
 
             _newsRepository.AddNews(newsEntity);
 
-            if (!await _newsRepository.SaveChangesAsync())
-            {
-                return StatusCode(500, "A problem happened while handling your request.");
-            }
+            await _newsRepository.SaveChangesAsync();
 
             var newsToReturn = _mapper.Map<NewsDto>(newsEntity);
 
@@ -96,7 +91,6 @@ namespace ChampManage.API.Controllers
         [HttpDelete("{newsId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteNews(int newsId)
         {
             var news = await _newsRepository.GetNewsByIdAsync(newsId);
@@ -108,10 +102,7 @@ namespace ChampManage.API.Controllers
 
             _newsRepository.DeleteNews(news);
 
-            if (!await _newsRepository.SaveChangesAsync())
-            {
-                return StatusCode(500, "A problem happened while handling your request.");
-            }
+            await _newsRepository.SaveChangesAsync();
 
             return NoContent();
         }
