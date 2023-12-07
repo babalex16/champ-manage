@@ -49,6 +49,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\AppIcon\setting.png" />
+	  <None Remove="Resources\AppIcon\trophy.png" />
 	  <None Remove="Resources\Images\image1.JPG" />
 	  <None Remove="Resources\Images\image2.JPG" />
 	  <None Remove="Resources\Images\image3.JPG" />
@@ -59,13 +61,23 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Include="Resources\AppIcon\news.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\EventsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\NewsDetailsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SettingsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

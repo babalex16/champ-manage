@@ -19,5 +19,4 @@ namespace ChampManage.MAUI
             await _viewModel.GetNewsAsync();
         }
     }
-
 }

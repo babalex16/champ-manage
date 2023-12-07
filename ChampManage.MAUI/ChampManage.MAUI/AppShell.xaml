@@ -6,9 +6,21 @@
     xmlns:local="clr-namespace:ChampManage.MAUI"
     Shell.FlyoutBehavior="Disabled">
 
-    <ShellContent
-        Title="MJJF"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
+    <TabBar x:Name="MyTabBar">
+        <Tab Title="News" Icon="news.png">
+            <ShellContent 
+                ContentTemplate="{DataTemplate local:MainPage}"
+                Route="MainPage"/>
+        </Tab>
+        <Tab Title="Events" Icon="trophy.png">
+            <ShellContent 
+                ContentTemplate="{DataTemplate local:Views.EventsPage}"
+                Route="EventsPage"/>
+        </Tab>
+        <Tab Title="Settings" Icon="setting.png">
+            <ShellContent 
+                ContentTemplate="{DataTemplate local:Views.SettingsPage}"
+                Route="SettingsPage"/>
+        </Tab>
+    </TabBar>
 </Shell>
