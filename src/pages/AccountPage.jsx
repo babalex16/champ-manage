@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import Cookies from "js-cookie";
+import React, { useEffect, useState } from "react";
 import { Form, FormGroup, Container, Button, Col, Row } from "react-bootstrap";
-import '../utils/AccountPage.css'
+import authService from "../services/authService/authService";
 
-function AccountPage() {
+const AccountPage = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -15,19 +16,54 @@ function AccountPage() {
     phone: "",
   });
 
+  const beltColors = ["White", "Blue", "Purple", "Brown", "Black"];
+
+  useEffect(() => {
+    const user = getUserDatafromCookies();
+    setFormData(user);
+  }, []);
+
+  const getUserDatafromCookies = () => {
+    if (!Cookies.get("user")) {
+      return;
+    }
+    return JSON.parse(Cookies.get("user"));
+  };
+
+  // const setDefaultData =
+
   const handleFormChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
+  const handlePhoneChange = (event) => {
+    const { name, value } = event.target;
+    if (/^\+?\d*$/.test(value)) {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  const handleWeightChange = (event) => {
+    const { name, value } = event.target;
+    if (/^\d*(\.\d{0,2})?$/.test(value)) {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  const handleOptionChange = (name, selectedValue) => {
+    setFormData({ ...formData, [name]: selectedValue });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Send the form data to your API here
+    await authService.updateUserDetails(formData);
   };
 
   return (
     <div
       style={{
-        paddingTop: "75px",
+        paddingTop: "100px",
+        paddingBottom: "30px",
         backgroundColor: "#5c8374",
         minHeight: "100vh",
         display: "flex",
@@ -35,34 +71,48 @@ function AccountPage() {
         alignItems: "center",
       }}
     >
-      <Container className="account-container m-4"
+      <Container
+        style={{
+          background: "white",
+          padding: "20px",
+          borderRadius: "10px",
+          width: "50%",
+        }}
       >
-        <h3 className="header">
-          User details
+        <h3 className="text-center text-black font-weight-bold text-uppercase">
+          User Details
         </h3>
         <Form>
-          <FormGroup className="mb-2">
-            <Row className="container-fluid">
-              <Col className="col-md-2">
+          <FormGroup className="p-2">
+            <Row className="container">
+              <Col className="col-md-2 justify-content-center">
                 <Form.Label className="text-black">First Name</Form.Label>
               </Col>
               <Col className="col-md-10">
-                <Form.Control type="text" value="vlad" plaintext />
+                <Form.Control
+                  type="text"
+                  defaultValue={formData.firstName}
+                  plaintext
+                />
               </Col>
             </Row>
           </FormGroup>
-          <FormGroup className="mb-2">
-            <Row className="container-fluid">
+          <FormGroup className="p-2">
+            <Row className="container">
               <Col className="col-md-2">
                 <Form.Label className="text-black">Last Name</Form.Label>
               </Col>
               <Col className="col-md-10">
-                <Form.Control type="text" value="zara" plaintext />
+                <Form.Control
+                  type="text"
+                  defaultValue={formData.lastName}
+                  plaintext
+                />
               </Col>
             </Row>
           </FormGroup>
-          <FormGroup className="mb-2">
-            <Row className="container-fluid">
+          <FormGroup className="p-2">
+            <Row className="container">
               <Col className="col-md-2">
                 <Form.Label className="text-black">Email Adress</Form.Label>
               </Col>
@@ -70,22 +120,21 @@ function AccountPage() {
                 <Form.Control
                   className=""
                   type="text"
-                  value="vlad.zara@email.com"
+                  defaultValue={formData.email}
                   plaintext
                 />
               </Col>
             </Row>
           </FormGroup>
-
-          <Button variant="secondary" className="m-4 ">
+          <Button variant="secondary" className="mt-4">
             Change Password
           </Button>
         </Form>
 
-        <h3 className="header">
+        <h3 className="text-center text-black font-weight-bold text-uppercase mt-5">
           Participant Data
         </h3>
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <Form.Group className="p-2">
             <Row className="container-fluid">
               <Col className="col-md-2">
@@ -95,11 +144,21 @@ function AccountPage() {
                 <Form.Select
                   name="gender"
                   value={formData.gender}
-                  onChange={handleFormChange}
+                  onChange={(e) => handleOptionChange("gender", e.target.value)}
                 >
-                  <option value="" disabled hidden>Choose an option...</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
+                  {formData.gender !== "" && (
+                    <option value="" disabled>
+                      Select gender
+                    </option>
+                  )}
+
+                  {formData.gender.length === 0 && (
+                    <option value="" disabled>
+                      Select gender
+                    </option>
+                  )}
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
                 </Form.Select>
               </Col>
             </Row>
@@ -122,7 +181,7 @@ function AccountPage() {
           </Form.Group>
 
           <Form.Group className="p-2">
-            <Row className="container-fluid">
+            <Row className="container">
               <Col className="col-md-2">
                 <Form.Label className="text-black">Team Name</Form.Label>
               </Col>
@@ -139,23 +198,23 @@ function AccountPage() {
           </Form.Group>
 
           <Form.Group className="p-2">
-            <Row className="container-fluid">
+            <Row className="container">
               <Col className="col-md-2">
                 <Form.Label className="text-black mt-2">Weight</Form.Label>
               </Col>
               <Col className="col-md-10">
                 <Form.Control
-                  type="number"
+                  type="text"
                   name="weight"
                   value={formData.weight}
-                  onChange={handleFormChange}
+                  onChange={handleWeightChange}
                 />
               </Col>
             </Row>
           </Form.Group>
 
           <Form.Group className="p-2">
-            <Row className="container-fluid">
+            <Row className="container">
               <Col className="col-md-2">
                 <Form.Label className="text-black mt-2">Belt</Form.Label>
               </Col>
@@ -165,19 +224,23 @@ function AccountPage() {
                   value={formData.belt}
                   onChange={handleFormChange}
                 >
-                  <option value="" disabled hidden>Choose an option...</option>
-                  <option value="White">White</option>
-                  <option value="Yellow">Blue</option>
-                  <option value="Orange">Purple</option>
-                  <option value="Green">Brown</option>
-                  <option value="Black">Black</option>
+                  {formData.belt !== "" && (
+                    <option value="" disabled>
+                      Select Belt
+                    </option>
+                  )}
+                  {beltColors.map((color, index) => (
+                    <option key={index} value={color}>
+                      {color}
+                    </option>
+                  ))}
                 </Form.Select>
               </Col>
             </Row>
           </Form.Group>
 
           <Form.Group className="p-2">
-            <Row className="container-fluid">
+            <Row className="container">
               <Col className="col-md-2">
                 <Form.Label className="text-black mt-2">Phone</Form.Label>
               </Col>
@@ -186,19 +249,19 @@ function AccountPage() {
                   type="text"
                   name="phone"
                   value={formData.phone}
-                  onChange={handleFormChange}
+                  onChange={handlePhoneChange}
                 />
               </Col>
             </Row>
           </Form.Group>
 
-          <Button variant="primary" type="submit" className="m-4 mx-auto d-block">
+          <Button variant="primary" type="submit" className="mt-4">
             Save Changes
           </Button>
         </Form>
       </Container>
     </div>
   );
-}
+};
 
 export default AccountPage;

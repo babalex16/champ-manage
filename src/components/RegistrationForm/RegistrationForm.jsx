@@ -1,109 +1,91 @@
-import React, { useState } from 'react';
-import { Form, Button, FormControl, Row, Col } from 'react-bootstrap';
-import './RegistrationForm.css'
+import React from "react";
+import { Form, Button, FormControl, Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
-function RegistrationForm() {
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-    });
+import authService from "../../services/authService/authService";
 
-    const handleChange = (event) => {
-        setFormData((prevState) => ({
-            ...prevState,
-            [event.target.name]: event.target.value,
-        }));
-    };
+import "./RegistrationForm.css";
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+const RegistrationForm = () => {
+  const { register, handleSubmit, formState } = useForm();
 
-        // Client-side password validation
-        if (formData.password !== formData.confirmPassword) {
-            alert("Passwords do not match");
-            return;
-        }
+  const navigate = useNavigate();
 
-        try {
-            //Perforing API request
-            const response = await fetch(`${process.env.REACT_APP_CHAMP_MANAGE_API}/api/account/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            });
-            const data = await response.json();
-            console.log(data);
+  const registerUserDetails = async (registerDetails) => {
+    await authService.registerUser(registerDetails);
 
-        } catch (error) {
-            // Handling API request errors
-            console.error("API request error:", error);
-        }
-    };
+    navigate("/");
+  };
 
-    return (
-        <div className='page-background' >
-            <Row className="justify-content-center">
-                <Col md={6} className='form-background'>
-                    <Form onSubmit={handleSubmit}>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} xs={12} md={6} controlId="formFirstName">
-                                <Form.Label>First Name</Form.Label>
-                                <Form.Control type="text" 
-                                              placeholder="Enter first name" 
-                                              style={{ borderRadius: '15px' }} 
-                                              required name="firstName" 
-                                              value={formData.firstName} 
-                                              onChange={handleChange} />
-                            </Form.Group>
-                            <Form.Group as={Col} xs={12} md={6} controlId="formLastName">
-                                <Form.Label>Last Name</Form.Label>
-                                <Form.Control   type="text" 
-                                                placeholder="Enter last name" 
-                                                style={{ borderRadius: '15px' }} 
-                                                required name="lastName" 
-                                                value={formData.lastName} 
-                                                onChange={handleChange} />
-                            </Form.Group>
-                        </Row>
-                        <Form.Group className="mb-3" controlId="formEmail">
-                            <Form.Label>Email address</Form.Label>
-                            <FormControl    type="email" 
-                                            placeholder="Enter email" 
-                                            style={{ borderRadius: '15px' }} 
-                                            required name="email" 
-                                            value={formData.email} 
-                                            onChange={handleChange} />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formPassword">
-                            <Form.Label>Password</Form.Label>
-                            <FormControl    type="password" 
-                                            placeholder="Enter password" 
-                                            style={{ borderRadius: '15px' }} 
-                                            required name="password" 
-                                            value={formData.password} 
-                                            onChange={handleChange} />
-                        </Form.Group>
-                        <Form.Group className="mb-4" controlId="formConfirmPassword">
-                            <Form.Label>Confirm Password</Form.Label>
-                            <FormControl type="password" 
-                                         placeholder="Confirm password"
-                                         style={{ borderRadius: '15px' }} 
-                                         required name="confirmPassword" 
-                                         value={formData.confirmPassword} 
-                                         onChange={handleChange} />
-                        </Form.Group>
-                        <Button variant="primary" type="submit" style={{ borderRadius: '15px', width: '100%' }}>
-                            Create Account
-                        </Button>
-                    </Form>
-                </Col>
+  return (
+    <div className="page-background">
+      <Row className="justify-content-center">
+        <Col md={6} className="form-background">
+          <Form onSubmit={handleSubmit(registerUserDetails)}>
+            <Row className="mb-3">
+              <Col>
+                <Form.Label>First Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter first name"
+                  style={{ borderRadius: "15px" }}
+                  name="firstName"
+                />
+              </Col>
+              <Col>
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter last name"
+                  style={{ borderRadius: "15px" }}
+                  name="lastName"
+                />
+              </Col>
             </Row>
-        </div>
-    );
-}
+            <Form.Label>Email address</Form.Label>
+            <FormControl
+              type="email"
+              placeholder="Enter email"
+              style={{ borderRadius: "15px" }}
+              name="email"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                  message: "Invalid email address",
+                },
+              })}
+            />
+            <Form.Label>Password</Form.Label>
+            <FormControl
+              type="password"
+              placeholder="Enter password"
+              style={{ borderRadius: "15px" }}
+              name="password"
+              {...register("password", { required: true })}
+            />
+            <Form.Label>Confirm Password</Form.Label>
+            <FormControl
+              type="password"
+              placeholder="Confirm password"
+              style={{ borderRadius: "15px" }}
+              name="confirmPassword"
+              {...register("confirmPassword", { required: true })}
+            />
+            <Button
+              variant="primary"
+              type="submit"
+              disabled={!formState.isValid}
+              style={{ borderRadius: "15px", width: "100%", marginTop: "20px" }}
+            >
+              Create Account
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </div>
+  );
+};
 
-export default RegistrationForm
+export default RegistrationForm;

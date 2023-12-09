@@ -1,15 +1,14 @@
 import { useMemo } from "react";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import './Map.css'
-
-export default function Map() {
+const Map = () => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
   if (!isLoaded) return <div>Loading...</div>;
-  return <RenderMap/>;
-  
+  return <RenderMap />;
+
 }
 
 function RenderMap() {
@@ -21,3 +20,5 @@ function RenderMap() {
     </GoogleMap>
   );
 }
+
+export default Map;

@@ -1,0 +1,14 @@
+.bracket-container {
+    width: 100%;
+    background: #A9B388;
+    min-height: 300px;
+    height: auto;
+    padding: 24px;
+    display: flex;
+    gap: 25px;
+}
+
+.bracket-container .column {
+    width: 240px;
+    height: 100%;
+}

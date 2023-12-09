@@ -19,7 +19,6 @@ function RulesPage() {
       <Footer/>
     </div>
   );
-  
 }
 
 export default RulesPage

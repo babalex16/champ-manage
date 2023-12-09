@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
-import {signedUserReducer} from "./signedUserReducer";
+import authReducer from "./auth/authReducer";
+import newsReducer from "./news/newsReducer";
 
-const rootReducer = combineReducers({user: signedUserReducer});
+const rootReducer = combineReducers({ auth: authReducer, news: newsReducer });
 
 export default rootReducer;

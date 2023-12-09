@@ -1,7 +1,7 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button';
 import CustomCarousel from '../components/Carousel/CustomCarousel'
-import Events from '../components/Events/Events'
+import Events from '../components/Championships/Championships'
 import News from '../components/News/News'
 import Footer from '../components/Footer/Footer'
 
