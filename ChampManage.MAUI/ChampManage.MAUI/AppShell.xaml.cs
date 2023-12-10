@@ -9,6 +9,7 @@ namespace ChampManage.MAUI
             InitializeComponent();
 
             Routing.RegisterRoute(nameof(NewsDetailsPage), typeof(NewsDetailsPage));
+            Routing.RegisterRoute(nameof(ChampionshipDetailsPage), typeof(ChampionshipDetailsPage));
         }
     }
 }

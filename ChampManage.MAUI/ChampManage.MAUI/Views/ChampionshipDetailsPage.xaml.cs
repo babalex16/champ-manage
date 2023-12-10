@@ -2,13 +2,13 @@ using ChampManage.MAUI.ViewModels;
 
 namespace ChampManage.MAUI.Views;
 
-public partial class NewsDetailsPage : ContentPage
+public partial class ChampionshipDetailsPage : ContentPage
 {
-	public NewsDetailsPage(NewsDetailsViewModel viewModel)
+	public ChampionshipDetailsPage(ChampionshipDetailsViewModel viewModel)
 	{
 		InitializeComponent();
-		BindingContext = viewModel;
-	}
+        BindingContext = viewModel;
+    }
 
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {

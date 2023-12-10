@@ -18,10 +18,17 @@ namespace ChampManage.MAUI
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
             builder.Services.AddSingleton<NewsService>();
+            builder.Services.AddSingleton<ChampionshipService>();
+
             builder.Services.AddSingleton<MainPageViewModel>();
             builder.Services.AddTransient<NewsDetailsViewModel>();
+            builder.Services.AddSingleton<ChampionshipsViewModel>();
+            builder.Services.AddTransient<ChampionshipDetailsViewModel>();
+
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddTransient<NewsDetailsPage>();
+            builder.Services.AddSingleton<ChampionshipsPage>();
+            builder.Services.AddTransient<ChampionshipDetailsPage>();
 
 #if DEBUG
 		builder.Logging.AddDebug();

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ChampManage.MAUI.Views.ChampionshipDetailsPage"
+             xmlns:viewmodel="clr-namespace:ChampManage.MAUI.ViewModels"
+             x:DataType="viewmodel:ChampionshipDetailsViewModel"
+             Title="ChampionshipDetailsPage">
+    
+    <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Spacing="10" Margin="20">
+
+        <Label Text="{Binding Championship.Title}" FontAttributes="Bold" FontSize="Large" HorizontalOptions="Center" />
+
+        <Label Text="{Binding Championship.Location}" HorizontalOptions="Center" />
+
+        <Label Text="{Binding Championship.DateTime, StringFormat='{0:MMMM dd, yyyy HH:mm}'}" HorizontalOptions="Center" />
+
+        <Label Text="{Binding Championship.RegistrationFee, StringFormat='Registration Fee: {0:C}'}" HorizontalOptions="Center" />
+
+        <Label Text="{Binding Championship.RegistrationDeadline, StringFormat='Registration Deadline: {0:MMMM dd, yyyy HH:mm}'}" HorizontalOptions="Center" />
+
+        <Label Text="{Binding Championship.Description}" HorizontalOptions="Center" />
+
+    </StackLayout>
+</ContentPage>

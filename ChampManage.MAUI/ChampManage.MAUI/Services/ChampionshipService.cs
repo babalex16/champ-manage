@@ -3,24 +3,24 @@ using System.Net.Http.Json;
 
 namespace ChampManage.MAUI.Services
 {
-    public class NewsService
+    public class ChampionshipService
     {
-        public async Task<List<News>> GetNews()
+        public async Task<List<Championship>> GetChampionships()
         {
             var httpClient = new HttpClientService().GetPlatformSpecificHttpClient();
             var baseUrl = DeviceInfo.Platform == DevicePlatform.Android
                 ? "https://10.0.2.2:7200"
                 : "https://localhost:7200";
-            var response = await httpClient.GetAsync($"{baseUrl}/api/news");
+            var response = await httpClient.GetAsync($"{baseUrl}/api/championships");
 
             if (response.IsSuccessStatusCode)
             {
-                var newsList = await response.Content.ReadFromJsonAsync<List<News>>();
-                return newsList;
+                var championshipList = await response.Content.ReadFromJsonAsync<List<Championship>>();
+                return championshipList;
             }
             else
             {
-                throw new Exception($"Failed to get news. Status code: {response.StatusCode}");
+                throw new Exception($"Failed to get championships. Status code: {response.StatusCode}");
             }
         }
     }
