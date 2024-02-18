@@ -79,9 +79,9 @@ const CustomNavbar = () => {
             <Nav.Link href="/championships" className="nav-style">
               Events
             </Nav.Link>
-            <Nav.Link href="/news" className="nav-style">
+            {/* <Nav.Link href="/news" className="nav-style">
               News
-            </Nav.Link>
+            </Nav.Link> */}
             <Nav.Link href="/rules" className="nav-style">
               Rules
             </Nav.Link>

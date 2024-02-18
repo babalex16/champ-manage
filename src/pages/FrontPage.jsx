@@ -15,12 +15,12 @@ function FrontPage() {
           ALL CHAMPIONSHIPS
         </Button>
       </div>
-      <News />
+      {/* <News />
       <div className='text-center py-5' style={{ backgroundColor: '#5c8374' }}>
         <Button href="/news" variant="outline-light" size="md" style={{ fontFamily: 'Roboto, sans-serif' }}>
           ALL NEWS
         </Button>
-      </div>
+      </div> */}
       <Footer />
     </>
   )

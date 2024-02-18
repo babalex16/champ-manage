@@ -54,9 +54,9 @@ const Information = ({championship}) => {
               {championship.location}
             </p>
           </Col>
-          <Col md={8} className="map-height">
+          {/* <Col md={8} className="map-height">
             <Map />
-          </Col>
+          </Col> */}
         </Row>
       </Container>
       <Container className="mt-4">

@@ -33,8 +33,8 @@ function App() {
             <Route path="/" element={<FrontPage />} />
             <Route path="/championships" element={<ChampionshipsPage />} />
             <Route path="/championship/:id" element={<ChampionshipTemplate />} />
-            <Route path="/news" element={<NewsPage />} />
-            <Route path="/newsPage/:id" element={<NewsTemplate/>} />
+            {/* <Route path="/news" element={<NewsPage />} /> */}
+            {/* <Route path="/newsPage/:id" element={<NewsTemplate/>} /> */}
             <Route path="/rules" element={<RulesPage />} />
             <Route path="/contacts" element={<ContactsPage />} />
             <Route path="/account" element={<Acc />} />
